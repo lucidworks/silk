@@ -1,19 +1,42 @@
-# Kibana 4.1.0-snapshot
+<!--# Kibana 4.1.0-snapshot-->
 
-[![Build Status](https://travis-ci.org/elasticsearch/kibana.svg?branch=master)](https://travis-ci.org/elasticsearch/kibana?branch=master)
+#Kibana 4 -> Banana 4
 
-Kibana is an open source ([Apache Licensed](https://github.com/elasticsearch/kibana/blob/master/LICENSE.md)), browser based analytics and search dashboard for Elasticsearch. Kibana is a snap to setup and start using. Kibana strives to be easy to get started with, while also being flexible and powerful, just like Elasticsearch.
+<!--[![Build Status](https://travis-ci.org/elasticsearch/kibana.svg?branch=master)](https://travis-ci.org/elasticsearch/kibana?branch=master)-->
 
-## Requirements
+<!--
+Banana4 is an open source ([Apache Licensed](https://github.com/elasticsearch/kibana/blob/master/LICENSE.md)), browser based analytics and search dashboard for Elasticsearch. Kibana is a snap to setup and start using. Kibana strives to be easy to get started with, while also being flexible and powerful, just like Elasticsearch.-->
 
-- Elasticsearch version 1.4.4 or later
-- Kibana binary package
+##Requirements
 
-## Installation
+- Elasticsearch version 1.4.4 or later running.
+
+##Running from development tree
+
+Setting up build dependency...
+
+```
+npm install
+bower install
+```
+
+Building front-end code...
+
+```
+grunt build
+```
+
+Running server...
+
+```
+npm run server
+```
+
+<!--## Installation
 
 * Download: [http://www.elasticsearch.org/overview/kibana/installation/](http://www.elasticsearch.org/overview/kibana/installation/)
 * Run `bin/kibana` on unix, or `bin\kibana.bat` on Windows.
-* Visit [http://localhost:5601](http://localhost:5601)
+* Visit [http://localhost:5601](http://localhost:5601)-->
 
 ## Quick Start
 
@@ -29,6 +52,7 @@ Congratulations, you have an index pattern! You should now be looking at a pagin
 
 Now that you've configured an index pattern, you're ready to hop over to the [Discover](#discover) screen and try out a few searches. Click on **Discover** in the navigation bar at the top of the screen.
 
+<!--
 ## Documentation
 
-Visit [Elasticsearch.org](http://www.elasticsearch.org/guide/en/kibana/current/index.html) for the full Kibana documentation.
+Visit [Elasticsearch.org](http://www.elasticsearch.org/guide/en/kibana/current/index.html) for the full Kibana documentation.-->
