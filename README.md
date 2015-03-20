@@ -34,7 +34,7 @@ npm run server
 
 <!--## Installation
 
-* Download: [http://www.elasticsearch.org/overview/kibana/installation/](http://www.elasticsearch.org/overview/kibana/installation/)
+* Download: [http://www.elastic.co/downloads/kibana](http://www.elastic.co/downloads/kibana)
 * Run `bin/kibana` on unix, or `bin\kibana.bat` on Windows.
 * Visit [http://localhost:5601](http://localhost:5601)-->
 
@@ -52,7 +52,6 @@ Congratulations, you have an index pattern! You should now be looking at a pagin
 
 Now that you've configured an index pattern, you're ready to hop over to the [Discover](#discover) screen and try out a few searches. Click on **Discover** in the navigation bar at the top of the screen.
 
-<!--
 ## Documentation
 
-Visit [Elasticsearch.org](http://www.elasticsearch.org/guide/en/kibana/current/index.html) for the full Kibana documentation.-->
+TODO
