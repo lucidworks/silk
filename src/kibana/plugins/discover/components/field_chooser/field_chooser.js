@@ -188,6 +188,9 @@ define(function (require) {
               count: 5,
               grouped: false
             });
+
+            console.log('field =', field);
+
             _.each(field.details.buckets, function (bucket) {
               bucket.display = field.format.convert(bucket.value);
             });

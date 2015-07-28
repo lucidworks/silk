@@ -12,7 +12,6 @@ define(function (require) {
   require('components/typeahead/typeahead');
   require('components/clipboard/clipboard');
 
-
   require('plugins/dashboard/directives/grid');
   require('plugins/dashboard/components/panel/panel');
   require('plugins/dashboard/services/saved_dashboards');
@@ -104,6 +103,7 @@ define(function (require) {
 
         function updateQueryOnRootSource() {
           var filters = $state.filters;
+
           if ($state.query) {
             dash.searchSource.set('filter', _.union($state.filters, [{
               query:  $state.query

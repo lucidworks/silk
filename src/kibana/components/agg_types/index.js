@@ -5,23 +5,27 @@ define(function (require) {
     var aggs = {
       metrics: [
         Private(require('components/agg_types/metrics/count')),
+        // We need Solr to support stats on facet.range and facet.query.
+        //   See: https://issues.apache.org/jira/browse/SOLR-6352
+        // Also the JSON API Faceted Search might be the solution here:
+        //   https://cwiki.apache.org/confluence/display/solr/Faceted+Search
         Private(require('components/agg_types/metrics/avg')),
         Private(require('components/agg_types/metrics/sum')),
         Private(require('components/agg_types/metrics/min')),
         Private(require('components/agg_types/metrics/max')),
         Private(require('components/agg_types/metrics/std_deviation')),
-        Private(require('components/agg_types/metrics/cardinality')),
-        Private(require('components/agg_types/metrics/percentiles'))
+        // Private(require('components/agg_types/metrics/cardinality')),
+        // Private(require('components/agg_types/metrics/percentiles'))
       ],
       buckets: [
         Private(require('components/agg_types/buckets/date_histogram')),
-        Private(require('components/agg_types/buckets/histogram')),
+        // Private(require('components/agg_types/buckets/histogram')),
         Private(require('components/agg_types/buckets/range')),
-        Private(require('components/agg_types/buckets/ip_range')),
+        // Private(require('components/agg_types/buckets/ip_range')),
         Private(require('components/agg_types/buckets/terms')),
         Private(require('components/agg_types/buckets/filters')),
-        Private(require('components/agg_types/buckets/significant_terms')),
-        Private(require('components/agg_types/buckets/geo_hash'))
+        // Private(require('components/agg_types/buckets/significant_terms')),
+        // Private(require('components/agg_types/buckets/geo_hash'))
       ]
     };
 

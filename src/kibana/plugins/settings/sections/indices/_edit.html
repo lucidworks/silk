@@ -10,9 +10,9 @@
           <div class="controls">
             <button
               ng-click="setDefaultPattern()"
-              tooltip="Set as default index"
+              tooltip="Set as default collection"
               class="btn btn-success">
-              <span class="sr-only">Set as default index</span>
+              <span class="sr-only">Set as default collection</span>
               <i aria-hidden="true" class="fa fa-star"></i>
             </button>
             <button
@@ -24,12 +24,12 @@
               <i aria-hidden="true" class="fa fa-refresh"></i>
             </button>
             <button
-              aria-label="Remove index pattern"
+              aria-label="Remove collection"
               confirm-click="removePattern()"
-              confirmation="Are you sure you want to remove this index pattern?"
-              tooltip="Remove index pattern"
+              confirmation="Are you sure you want to remove this collection?"
+              tooltip="Remove collection"
               class="btn btn-danger">
-              <span class="sr-only">Remove index pattern</span>
+              <span class="sr-only">Remove collection</span>
               <i aria-hidden="true" class="fa fa-trash"></i>
             </button>
           </div>
@@ -37,11 +37,11 @@
 
         <p>
           This page lists every field in the <strong>{{indexPattern.id}}</strong>
-          index and the field's associated core type as recorded by Elasticsearch.
+          collection and the field's associated core type as recorded by Solr.
           While this list allows you to view the core type of each field, changing
-          field types must be done using Elasticsearch's
-          <a target="_window" href="http://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html">
-            Mapping API
+          field types must be done using Solr's
+          <a target="_window" href="https://cwiki.apache.org/confluence/display/solr/Schema+API">
+            API
             <i aria-hidden="true" class="fa-link fa"></i>
           </a>
         </p>
@@ -49,7 +49,7 @@
           This index uses a <strong>Time-based index pattern</strong> which repeats <span bo-text="indexPattern.getInterval().display"></span>
         </div>
         <div bo-if="conflictFields.length" class="alert alert-warning">
-          <strong>Mapping conflict!</strong> {{conflictFields.length > 1 ? conflictFields.length : 'A'}} field{{conflictFields.length > 1 ? 's' : ''}} {{conflictFields.length > 1 ? 'are' : 'is'}} defined as several types (string, integer, etc) across the indices that match this pattern. You may still be able to use these conflict fields in parts of Kibana, but they will be unavailable for functions that require Kibana to know their type. Correcting this issue will require reindexing your data.
+          <strong>Mapping conflict!</strong> 
         </div>
       </div>
 
@@ -64,7 +64,7 @@
 
       <indexed-fields ng-show="state.tab == 'indexedFields'" class="fields"></indexed-fields>
 
-      <scripted-fields ng-show="state.tab == 'scriptedFields'" class="scripted-fields"></scripted-fields>
+      <!-- <scripted-fields ng-show="state.tab == 'scriptedFields'" class="scripted-fields"></scripted-fields> -->
 
     </div>
   </kbn-settings-indices>

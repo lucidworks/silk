@@ -16,11 +16,14 @@ define(function (require) {
         title: 'fields',
         index: 'indexedFields',
         count: fieldCount.indexed
-      }, {
-        title: 'scripted fields',
-        index: 'scriptedFields',
-        count: fieldCount.scripted
-      }];
+      }
+      // Hide scripted fields from UI
+      // , {
+      //   title: 'scripted fields',
+      //   index: 'scriptedFields',
+      //   count: fieldCount.scripted
+      // }
+      ];
     };
   };
 });

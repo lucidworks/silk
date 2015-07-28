@@ -1,3 +1,7 @@
+/**
+ * NOTE: For Solr, we don't need to use this file because we
+ * implement the backend code directly in doc_source.js
+ */
 define(function (require) {
   var _ = require('lodash');
   var errors = require('errors');
@@ -24,6 +28,7 @@ define(function (require) {
         params.version = doc._getVersion();
       }
 
+      // create index here
       return es[method](params)
       .then(function (resp) {
         if (resp.status === 409) throw new errors.VersionConflict(resp);

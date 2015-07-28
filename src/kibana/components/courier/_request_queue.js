@@ -17,7 +17,7 @@ define(function (require) {
     };
 
     queue.get = function (/* strategies.. */) {
-      var strategies = _.toArray(arguments);
+      var strategies = _.toArray(arguments); 
       return queue.filter(function (req) {
         var strategyMatch = !strategies.length;
         if (!strategyMatch) {

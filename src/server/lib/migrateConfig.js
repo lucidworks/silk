@@ -4,6 +4,7 @@ var upgrade = require('./upgradeConfig');
 module.exports = function (client) {
   var options =  {
     index: config.kibana.kibana_index,
+    // index: config.kibana.banana_index,
     type: 'config',
     body: {
       size: 1000,

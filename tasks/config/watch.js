@@ -18,6 +18,20 @@ module.exports = function (grunt) {
       tasks: ['less']
     },
 
+    js: {
+      files: [
+        '<%= app %>/**/*.js'
+      ],
+      tasks: ['copy:kibana_src']
+    },
+
+    html: {
+      files: [
+        '<%= app %>/**/*.html'
+      ],
+      tasks: ['copy:kibana_src']
+    },
+
     jade: {
       files: [
         '<%= unitTestDir %>/index.jade'

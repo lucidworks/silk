@@ -4,7 +4,6 @@ define(function (require) {
  // bring in the factory
   require('plugins/dashboard/services/_saved_dashboard');
 
-
   // Register this service with the saved object registry so it can be
   // edited by the object editor.
   require('plugins/settings/saved_object_registry').register({
@@ -13,7 +12,7 @@ define(function (require) {
   });
 
   // This is the only thing that gets injected into controllers
-  module.service('savedDashboards', function (Promise, SavedDashboard, config, es, kbnUrl) {
+  module.service('savedDashboards', function (Promise, SavedDashboard, config, es, kbnUrl, configFile, $http) {
     this.type = SavedDashboard.type;
 
     // Returns a single dashboard by ID, should be the name of the dashboard
@@ -34,29 +33,45 @@ define(function (require) {
       });
     };
 
-
     this.find = function (searchString) {
       var self = this;
-      var body = searchString ? {
-          query: {
-            simple_query_string: {
-              query: searchString + '*',
-              fields: ['title^3', 'description'],
-              default_operator: 'AND'
-            }
-          }
-        }: { query: {match_all: {}}};
-      return es.search({
-        index: config.file.kibana_index,
-        type: 'dashboard',
-        body: body,
-        size: 100
-      })
+      // var body = searchString ? {
+      //     query: {
+      //       simple_query_string: {
+      //         query: searchString + '*',
+      //         fields: ['title^3', 'description'],
+      //         default_operator: 'AND'
+      //       }
+      //     }
+      //   }: { query: {match_all: {}}};
+      // return es.search({
+      //   index: config.file.kibana_index,
+      //   type: 'dashboard',
+      //   body: body,
+      //   size: 100
+      // })
+      // .then(function (resp) {
+      //   return {
+      //     total: resp.hits.total,
+      //     hits: resp.hits.hits.map(function (hit) {
+      //       var source = hit._source;
+      //       source.id = hit._id;
+      //       source.url = self.urlFor(hit._id);
+      //       return source;
+      //     })
+      //   };
+      // });
+      if (!searchString) {
+        searchString = '';
+      }
+
+      var solrUrl = configFile.solr + '/' + configFile.kibana_index + '/select?wt=json&q=_type:dashboard AND _id:' + searchString + '*';
+      return $http.get(solrUrl)
       .then(function (resp) {
         return {
-          total: resp.hits.total,
-          hits: resp.hits.hits.map(function (hit) {
-            var source = hit._source;
+          total: resp.data.response.numFound,
+          hits: resp.data.response.docs.map(function (hit) {
+            var source = angular.fromJson(hit._source);
             source.id = hit._id;
             source.url = self.urlFor(hit._id);
             return source;

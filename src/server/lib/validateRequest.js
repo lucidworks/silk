@@ -5,6 +5,8 @@ var parse = require('url').parse;
 validate.Fail = function () {
   this.message = 'Kibana only support modifying the "' + config.kibana.kibana_index +
   '" index. Requests that might modify other indicies are not sent to elasticsearch.';
+  // this.message = 'Kibana only support modifying the "' + config.kibana.banana_index +
+  // '" index. Requests that might modify other indicies are not sent to elasticsearch.';
 };
 
 validate.BadIndex = function (index) {

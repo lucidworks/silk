@@ -1,5 +1,5 @@
 define(function (require) {
-  return function SavedObjectFactory(es, configFile, Promise, Private, Notifier, indexPatterns) {
+  return function SavedObjectFactory(es, configFile, Promise, Private, Notifier, indexPatterns, $http) {
     var angular = require('angular');
     var errors = require('errors');
     var _ = require('lodash');
@@ -92,7 +92,6 @@ define(function (require) {
           // fetch the object from ES
           return docSource.fetch()
           .then(function applyESResp(resp) {
-
             self._source = _.cloneDeep(resp._source);
 
             if (!resp.found) throw new errors.SavedObjectNotFound(type, self.id);
@@ -219,10 +218,14 @@ define(function (require) {
       self.saveSource = function (source) {
         var finish = function (id) {
           self.id = id;
-          return es.indices.refresh({
-            index: configFile.kibana_index
-          })
-          .then(function () {
+
+          // return es.indices.refresh({
+          //   index: configFile.kibana_index
+          // })
+          // .then(function () {
+          //   return self.id;
+          // });
+          return Promise.resolve(function () {
             return self.id;
           });
         };
@@ -250,19 +253,24 @@ define(function (require) {
       };
 
       /**
-       * Delete this object from Elasticsearch
+       * Delete this object from Solr
        * @return {promise}
        */
       self.delete = function () {
-        return es.delete({
-          index: configFile.kibana_index,
-          type: type,
-          id: this.id
-        }).then(function () {
-          return es.indices.refresh({
-            index: configFile.kibana_index
-          });
-        });
+        // return es.delete({
+        //   index: configFile.kibana_index,
+        //   type: type,
+        //   id: this.id
+        // }).then(function () {
+        //   return es.indices.refresh({
+        //     index: configFile.kibana_index
+        //   });
+        // });
+        var solrUrl = configFile.solr + '/' + configFile.kibana_index + 
+          '/update?stream.body=<delete><query>_type:' + type + ' AND _id:"' + this.id +
+          '" AND _index:' + configFile.kibana_index + '</query></delete>&commit=true';
+        return $http.get(solrUrl)
+        .then(function () {});
       };
 
     }

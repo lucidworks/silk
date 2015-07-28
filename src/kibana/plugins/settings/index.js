@@ -1,6 +1,5 @@
 define(function (require, module, exports) {
   var _ = require('lodash');
-
   require('css!plugins/settings/styles/main.css');
   require('filters/start_from');
 

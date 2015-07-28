@@ -7,6 +7,7 @@ define(function (require, module, exports) {
   require('css!plugins/discover/styles/main.css');
 
   var apps = require('registry/apps');
+
   apps.register(function DiscoverAppModule() {
     return {
       id: 'discover',

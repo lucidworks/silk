@@ -6,7 +6,7 @@ define(function (require) {
 
   require('modules')
     .get('kibana')
-    .directive('validateQuery', function (es, $compile, timefilter, configFile, debounce, Private) {
+    .directive('validateQuery', function (es, $compile, timefilter, configFile, debounce, Private, Promise) {
       var fromUser = Private(require('components/validate_query/lib/from_user'));
       var toUser = require('components/validate_query/lib/to_user');
 
@@ -61,16 +61,25 @@ define(function (require) {
             }
 
             function sendRequest() {
-              request = es.indices.validateQuery({
-                index: index,
-                type: type,
-                explain: true,
-                ignoreUnavailable: true,
-                body: {
-                  query: query || { match_all: {} }
-                }
-              })
-              .then(success, error);
+              // request = es.indices.validateQuery({
+              //   index: index,
+              //   type: type,
+              //   explain: true,
+              //   ignoreUnavailable: true,
+              //   body: {
+              //     query: query || { match_all: {} }
+              //   }
+              // })
+              // .then(success, error);
+              //
+              // For Solr, we will not perform validate query so here we always just fake the valid resp.
+              var resp = {
+                    valid: true,
+                    body: {
+                      error: ''
+                    }
+                  };
+              Promise.resolve(resp).then(success, error);
             }
 
             function error(resp) {

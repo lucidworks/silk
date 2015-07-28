@@ -23,7 +23,7 @@ define(function (require) {
     }
 
     function fetchWithStrategy(strategy, requests) {
-
+      // console.log("strategy =", strategy, "requests = ", requests)
       requests = requests.map(function (req) {
         if (req.aborted) {
           return ABORTED;

@@ -22,6 +22,7 @@ define(function (require) {
         indexPattern: '=?',
         searchSource: '=?',
         infiniteScroll: '=?',
+        infiniteScrollCallback: '=?',
         filter: '=?',
       },
       link: function ($scope) {
@@ -53,6 +54,9 @@ define(function (require) {
 
         $scope.addRows = function () {
           $scope.limit += 50;
+          window.bananaProps.scrollLimit = $scope.limit;
+          console.log("window.bananaProps.scrollLimit = ", window.bananaProps.scrollLimit);
+          $scope.infiniteScrollCallback();
         };
 
         $scope.$watch('searchSource', prereq(function (searchSource) {

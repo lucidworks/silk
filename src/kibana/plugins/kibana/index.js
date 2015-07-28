@@ -51,7 +51,7 @@ define(function (require) {
           $injector.invoke(require('plugins/kibana/_init'), self, mixinLocals);
           $injector.invoke(require('plugins/kibana/_apps'), self, mixinLocals);
           $injector.invoke(require('plugins/kibana/_timepicker'), self, mixinLocals);
-
+          
           $scope.setupComplete = true;
         });
       }

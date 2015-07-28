@@ -9,12 +9,24 @@ define(function (require) {
     var ShardFailure = require('errors').ShardFailure;
 
     function callResponseHandlers(requests, responses) {
+
+      // console.log('callResponseHandlers requests =', requests);
+      // console.log('callResponseHandlers responses =', responses);
+
       return Promise.map(requests, function (req, i) {
         if (req === ABORTED || req.aborted) {
           return ABORTED;
         }
 
+        // console.log('callResponseHandlers req =', req);
+        // console.log('callResponseHandlers i =', i);
+
         var resp = responses[i];
+
+        // if resp === undefined, assign it to empty obj to avoid runtime errors.
+        if (!resp) {
+          resp = {};
+        }
 
         if (resp.timed_out) {
           notify.warning(new SearchTimeout());

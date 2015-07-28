@@ -24,6 +24,8 @@ define(function (require) {
     $scope.indexPattern = $route.current.locals.indexPattern;
     var otherIds = _.without($route.current.locals.indexPatternIds, $scope.indexPattern.id);
 
+    console.log('$scope.indexPattern =', $scope.indexPattern);
+
     var fieldTypes = Private(require('plugins/settings/sections/indices/_field_types'));
     $scope.$watch('indexPattern.fields', function () {
       $scope.fieldTypes = fieldTypes($scope.indexPattern);

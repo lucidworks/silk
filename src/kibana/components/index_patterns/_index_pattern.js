@@ -1,5 +1,5 @@
 define(function (require) {
-  return function IndexPatternFactory(Private, timefilter, configFile, Notifier, shortDotsFilter, config, Promise) {
+  return function IndexPatternFactory(Private, timefilter, configFile, Notifier, shortDotsFilter, config, Promise, $http) {
     var _ = require('lodash');
     var angular = require('angular');
     var errors = require('errors');
@@ -54,28 +54,69 @@ define(function (require) {
           return mappingSetup.setup(type, mapping);
         })
         .then(function () {
+          // Retrieve time field from Solr silkconfig collection
+          // time field is in _source field
+          if (!self.id) return;
+
+          var solrUrl = configFile.solr + '/' + configFile.kibana_index
+            + '/select?wt=json&q=_type:index-pattern%20_id:'+ self.id + '&fl=_source';
+          return $http.get(solrUrl)
+            .then(function (resp) {
+              var numFound = resp.data.response.numFound;
+              if (numFound) {
+                var sourceField = angular.fromJson(resp.data.response.docs[0]._source);
+                return sourceField.timeFieldName;
+              }
+            });
+        })
+        .then(function (timeField) {
+          self.timeFieldName = timeField;
+
           // If there is no id, then there is no document to fetch from elasticsearch
           if (!self.id) return;
 
           // fetch the object from ES
-          return docSource.fetch()
-          .then(function applyESResp(resp) {
-            if (!resp.found) throw new errors.SavedObjectNotFound(type, self.id);
+          // return docSource.fetch()
+          // .then(function applyESResp(resp) {
+          //   if (!resp.found) throw new errors.SavedObjectNotFound(type, self.id);
 
-            // deserialize any json fields
-            _.forOwn(mapping, function ittr(fieldMapping, name) {
-              if (fieldMapping._deserialize) {
-                resp._source[name] = fieldMapping._deserialize(resp._source[name], resp, name, fieldMapping);
-              }
-            });
+          //   // deserialize any json fields
+          //   _.forOwn(mapping, function ittr(fieldMapping, name) {
+          //     if (fieldMapping._deserialize) {
+          //       resp._source[name] = fieldMapping._deserialize(resp._source[name], resp, name, fieldMapping);
+          //     }
+          //   });
+
+          //   // Give obj all of the values in _source.fields
+          //   _.assign(self, resp._source);
+
+          //   self._indexFields();
+
+          //   // Any time obj is updated, re-call applyESResp
+          //   docSource.onUpdate().then(applyESResp, notify.fatal);
+          // });
+
+          return mapper.getFieldsForIndexPattern(self, true)
+          .then(function (fields) {
+            var resp = {};
+
+            // append existing scripted fields
+            fields = fields.concat(self.getFields('scripted'));
+
+            // convert Solr fields to be es compatible
+            resp._source = {
+              "customFormats": {},
+              "fields": fields,
+              "timeFieldName": self.timeFieldName,
+              "title": self.id
+            };
 
             // Give obj all of the values in _source.fields
             _.assign(self, resp._source);
-
             self._indexFields();
 
             // Any time obj is updated, re-call applyESResp
-            docSource.onUpdate().then(applyESResp, notify.fatal);
+            // docSource.onUpdate().then(applyESResp, notify.fatal);
           });
         })
         .then(function () {
@@ -94,6 +135,7 @@ define(function (require) {
             if (field.hasOwnProperty('format')) return field;
 
             var type = fieldTypes.byName[field.type];
+
             Object.defineProperties(field, {
               bucketable: {
                 value: field.indexed || field.scripted
@@ -104,7 +146,7 @@ define(function (require) {
                 }
               },
               filterable: {
-                value: field.name === '_id' || ((field.indexed && type.filterable) || field.scripted)
+                value: field.name === '_id' || ((field.indexed && (type && type.filterable)) || field.scripted)
               },
               format: {
                 get: function () {
@@ -113,7 +155,6 @@ define(function (require) {
                 }
               },
               sortable: {
-                value: field.indexed && type.sortable
               },
               scripted: {
                 // enumerable properties end up in the JSON
@@ -223,7 +264,6 @@ define(function (require) {
         // clear the indexPattern list cache
         getIds.clearCache();
         return body;
-
       };
 
       // index the document
@@ -234,6 +274,7 @@ define(function (require) {
 
       self.create = function () {
         var body = self.prepBody();
+
         return docSource.doCreate(body)
         .then(finish).catch(function (err) {
           var confirmMessage = 'Are you sure you want to overwrite this?';
@@ -279,8 +320,6 @@ define(function (require) {
       self.flattenSearchResponse = flattenSearchResponse.bind(self);
       self.flattenHit = flattenHit.bind(self);
       self.getComputedFields = getComputedFields.bind(self);
-
-
     }
     return IndexPattern;
   };

@@ -30,6 +30,7 @@ define(function (require) {
     },
     'defaultIndex': {
       value: null,
+      // value: 'logs',
       description: 'The index to access if no index is set',
     },
     'metaFields': {

@@ -15,9 +15,7 @@ define(function (require) {
     title: 'searches'
   });
 
-  module.service('savedSearches', function (Promise, config, configFile, es, createNotifier, SavedSearch, kbnUrl) {
-
-
+  module.service('savedSearches', function (Promise, config, configFile, es, createNotifier, SavedSearch, kbnUrl, $http) {
     var notify = createNotifier({
       location: 'Saved Searches'
     });
@@ -39,28 +37,47 @@ define(function (require) {
       });
     };
 
+    // To find saved searches (e.g. Load Saved Search button in Discover page)
     this.find = function (searchString) {
       var self = this;
-      var body = searchString ? {
-          query: {
-            simple_query_string: {
-              query: searchString + '*',
-              fields: ['title^3', 'description'],
-              default_operator: 'AND'
-            }
-          }
-        }: { query: {match_all: {}}};
-      return es.search({
-        index: configFile.kibana_index,
-        type: 'search',
-        body: body,
-        size: 100
-      })
+      // var body = searchString ? {
+      //     query: {
+      //       simple_query_string: {
+      //         query: searchString + '*',
+      //         fields: ['title^3', 'description'],
+      //         default_operator: 'AND'
+      //       }
+      //     }
+      //   }: { query: {match_all: {}}};
+      // return es.search({
+      //   index: configFile.kibana_index,
+      //   type: 'search',
+      //   body: body,
+      //   size: 100
+      // })
+      // .then(function (resp) {
+      //   return {
+      //     total: resp.hits.total,
+      //     hits: resp.hits.hits.map(function (hit) {
+      //       var source = hit._source;
+      //       source.id = hit._id;
+      //       source.url = self.urlFor(hit._id);
+      //       return source;
+      //     })
+      //   };
+      // });
+      
+      if (!searchString) {
+        searchString = '';
+      }
+
+      var solrUrl = configFile.solr + '/' + configFile.kibana_index + '/select?wt=json&q=_type:search AND _id:' + searchString + '*';
+      return $http.get(solrUrl)
       .then(function (resp) {
         return {
-          total: resp.hits.total,
-          hits: resp.hits.hits.map(function (hit) {
-            var source = hit._source;
+          total: resp.data.response.numFound,
+          hits: resp.data.response.docs.map(function (hit) {
+            var source = angular.fromJson(hit._source);
             source.id = hit._id;
             source.url = self.urlFor(hit._id);
             return source;

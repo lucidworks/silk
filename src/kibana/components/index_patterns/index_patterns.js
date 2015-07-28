@@ -2,7 +2,7 @@ define(function (require) {
   var module = require('modules').get('kibana/index_patterns');
   require('filters/short_dots');
 
-  module.service('indexPatterns', function (configFile, es, Notifier, Private, Promise) {
+  module.service('indexPatterns', function (configFile, es, Notifier, Private, Promise, $http) {
     var self = this;
     var _ = require('lodash');
     var errors = require('errors');
@@ -16,6 +16,10 @@ define(function (require) {
       if (!id) return self.make();
 
       var cache = patternCache.get(id);
+
+      // console.log('patternCache.get id =', id);
+      // console.log('patternCache cache =', cache);
+
       return cache || patternCache.set(id, self.make(id));
     };
 
@@ -26,10 +30,18 @@ define(function (require) {
     self.delete = function (pattern) {
       self.getIds.clearCache();
       patternCache.delete(pattern.id);
-      return es.delete({
-        index: configFile.kibana_index,
-        type: 'index-pattern',
-        id: pattern.id
+      // return es.delete({
+      //   index: configFile.kibana_index,
+      //   type: 'index-pattern',
+      //   id: pattern.id
+      // });
+
+      var solrUrl = configFile.solr + '/' + configFile.kibana_index +
+        '/update?stream.body=<delete><query>_type:index-pattern AND _id:"' + pattern.id +
+        '"</query></delete>&commit=true';
+      return $http.get(solrUrl)
+      .then(function (resp) {
+        notify.info(pattern.id + ' collection deleted.');
       });
     };
 

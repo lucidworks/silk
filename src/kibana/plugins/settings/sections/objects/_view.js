@@ -15,7 +15,7 @@ define(function (require) {
   .directive('kbnSettingsObjectsView', function (config, Notifier) {
     return {
       restrict: 'E',
-      controller: function ($scope, $injector, $routeParams, $location, $window, $rootScope, es) {
+      controller: function ($scope, $injector, $routeParams, $location, $window, $rootScope, es, $http, Promise) {
         var notify = new Notifier({ location: 'SavedObject view' });
 
         var serviceObj = registry.get($routeParams.service);
@@ -74,12 +74,22 @@ define(function (require) {
 
         $scope.title = inflection.singularize(serviceObj.title);
 
-        es.get({
-          index: config.file.kibana_index,
-          type: service.type,
-          id: $routeParams.id
-        })
-        .then(function (obj) {
+        // es.get({
+        //   index: config.file.kibana_index,
+        //   type: service.type,
+        //   id: $routeParams.id
+        // })
+        // .then(function (obj) {
+        //   $scope.obj = obj;
+        //   $scope.link = service.urlFor(obj._id);
+        //   $scope.fields = _.reduce(obj._source, createField, []);
+        // })
+        // .catch(notify.fatal);
+        var solrUrl = config.file.solr + '/' + config.file.kibana_index + '/select?wt=json&omitHeader=true&q=_id:' + $routeParams.id + ' AND _type:' + service.type;
+
+        $http.get(solrUrl).then(function (resp) {
+          var obj = resp.data.response.docs[0];
+          obj._source = angular.fromJson(obj._source);
           $scope.obj = obj;
           $scope.link = service.urlFor(obj._id);
           $scope.fields = _.reduce(obj._source, createField, []);
@@ -127,12 +137,19 @@ define(function (require) {
          * @returns {type} description
          */
         $scope.delete = function () {
-          es.delete({
-            index: config.file.kibana_index,
-            type: service.type,
-            id: $routeParams.id
-          })
-          .then(function (resp) {
+          // es.delete({
+          //   index: config.file.kibana_index,
+          //   type: service.type,
+          //   id: $routeParams.id
+          // })
+          // .then(function (resp) {
+          //   return redirectHandler('deleted');
+          // })
+          // .catch(notify.fatal);
+          var q = '_id:' + $routeParams.id + ' AND _type:' + service.type + ' AND _index:' + config.file.kibana_index;
+          var solrUrl = config.file.solr + '/' + config.file.kibana_index + '/update?commit=true&stream.body=<delete><query>' + q + '</query></delete>';
+
+          $http.get(solrUrl).then(function (resp) {
             return redirectHandler('deleted');
           })
           .catch(notify.fatal);
@@ -155,22 +172,36 @@ define(function (require) {
             _.setValue(source, field.name, value);
           });
 
-          es.index({
-            index: config.file.kibana_index,
-            type: service.type,
-            id: $routeParams.id,
-            body: source
-          })
-          .then(function (resp) {
+          // es.index({
+          //   index: config.file.kibana_index,
+          //   type: service.type,
+          //   id: $routeParams.id,
+          //   body: source
+          // })
+          // .then(function (resp) {
+          //   return redirectHandler('updated');
+          // })
+          // .catch(notify.fatal);
+          var solrUrl = config.file.solr + '/' + config.file.kibana_index + '/update?commit=true';
+          var data = [{
+            "_id": $routeParams.id,
+            "_index": config.file.kibana_index,
+            "_type": service.type,
+            "_source": angular.toJson(source),
+            "found": true
+          }];
+
+          $http.post(solrUrl, data).then(function (resp) {
             return redirectHandler('updated');
           })
           .catch(notify.fatal);
         };
 
         function redirectHandler(action) {
-          return es.indices.refresh({
-            index: config.file.kibana_index
-          })
+          // return es.indices.refresh({
+          //   index: config.file.kibana_index
+          // })
+          return Promise.resolve()
           .then(function (resp) {
             var msg = 'You successfully ' + action + ' the "' + $scope.obj._source.title + '" ' + $scope.title.toLowerCase() + ' object';
 

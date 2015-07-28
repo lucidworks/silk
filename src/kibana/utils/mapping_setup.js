@@ -1,5 +1,5 @@
 define(function () {
-  return function MappingSetupService(configFile, es) {
+  return function MappingSetupService(configFile, es, $http) {
     var angular = require('angular');
     var _ = require('lodash');
     var mappingSetup = this;
@@ -23,17 +23,29 @@ define(function () {
      * @return {[type]} [description]
      */
     var getKnownKibanaTypes = _.once(function () {
+      // This function should return an array like this:
+      //   _.keys(resp[indexName].mappings) =
+      //     ["visualization", "search", "index-pattern", "config", "dashboard"]
+
       var indexName = configFile.kibana_index;
-      return es.indices.getFieldMapping({
-        // only concerned with types in this kibana index
-        index: indexName,
-        // check all types
-        type: '*',
-        // limit the response to just the _source field for each index
-        field: '_source'
-      }).then(function (resp) {
-        return _.keys(resp[indexName].mappings);
-      });
+
+      // TODO: return a hard coded array for now
+      var hardcode = ["visualization", "search", "index-pattern", "config", "dashboard"];
+      return $http.get(configFile.solr + '/' + configFile.kibana_index + '/select?wt=json')
+        .then(function (resp) {
+          return hardcode;
+        });
+
+      // return es.indices.getFieldMapping({
+      //   // only concerned with types in this kibana index
+      //   index: indexName,
+      //   // check all types
+      //   type: '*',
+      //   // limit the response to just the _source field for each index
+      //   field: '_source'
+      // }).then(function (resp) {
+      //   return _.keys(resp[indexName].mappings);
+      // });
     });
 
     mappingSetup.expandShorthand = function (sh) {
@@ -81,6 +93,7 @@ define(function () {
           properties: mapping
         };
 
+        // TODO
         return es.indices.putMapping({
           index: configFile.kibana_index,
           type: type,

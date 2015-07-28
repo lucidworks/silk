@@ -20,7 +20,7 @@ define(function (require) {
 
     // this and child scopes will write pattern vars here
     var index = $scope.index = {
-      name: 'logstash-*',
+      name: 'logs',
 
       isTimeBased: true,
       nameIsPattern: false,
@@ -126,16 +126,34 @@ define(function (require) {
         }
 
         // fetch the fields
+        // return indexPattern.create()
+        // .then(function (id) {
+
+        //   console.log('id =', id);
+
+        //   if (id) {
+        //     refreshKibanaIndex().then(function () {
+        //       if (!config.get('defaultIndex')) {
+        //         config.set('defaultIndex', indexPattern.id);
+        //       }
+        //       indexPatterns.cache.clear(indexPattern.id);
+        //       kbnUrl.change('/settings/indices/' + indexPattern.id);
+        //     });
+        //   }
+        // });
+
         return indexPattern.create()
         .then(function (id) {
           if (id) {
-            refreshKibanaIndex().then(function () {
-              if (!config.get('defaultIndex')) {
-                config.set('defaultIndex', indexPattern.id);
-              }
-              indexPatterns.cache.clear(indexPattern.id);
-              kbnUrl.change('/settings/indices/' + indexPattern.id);
-            });
+            if (!config.get('defaultIndex')) {
+              config.set('defaultIndex', indexPattern.id);
+            }
+
+            console.log('indexPattern =', indexPattern);
+
+            indexPatterns.cache.clear(indexPattern.id);
+            // indexPattern.save(); // Does not seem to do anything
+            kbnUrl.change('/settings/indices/' + indexPattern.id);
           }
         });
 

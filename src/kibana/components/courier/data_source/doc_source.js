@@ -1,7 +1,7 @@
 define(function (require) {
   var _ = require('lodash');
 
-  return function DocSourceFactory(Private, Promise, es, sessionStorage) {
+  return function DocSourceFactory(Private, Promise, es, sessionStorage, $http, configFile) {
     var sendToEs = Private(require('components/courier/data_source/_doc_send_to_es'));
     var SourceAbstract = Private(require('components/courier/data_source/_abstract'));
     var DocRequest = Private(require('components/courier/fetch/request/doc'));
@@ -40,8 +40,20 @@ define(function (require) {
      * @return {undefined}
      */
     DocSource.prototype.doUpdate = function (fields) {
-      if (!this._state.id) return this.doIndex(fields);
-      return sendToEs.call(this, 'update', false, { doc: fields });
+      // if (!this._state.id) return this.doIndex(fields);
+      // return sendToEs.call(this, 'update', false, { doc: fields });
+      var solrUrl = configFile.solr + '/' + this._state.index + '/update?commit=true';
+      var data = [{
+        "_id": this._state.id,
+        "_index": this._state.index,
+        "_type": this._state.type,
+        "_source": {"set":angular.toJson(fields)}
+      }];
+
+      return $http.post(solrUrl, data)
+      .then(function (resp) {
+        return '';
+      });
     };
 
     /**
@@ -50,11 +62,42 @@ define(function (require) {
      * @return {[type]}        [description]
      */
     DocSource.prototype.doIndex = function (body) {
-      return sendToEs.call(this, 'index', false, body);
+      // return sendToEs.call(this, 'index', false, body);
+      var solrUrl = configFile.solr + '/' + this._state.index + '/update?commit=true';
+      var data = [{
+        "_id": this._state.id,
+        "_index": this._state.index,
+        "_type": this._state.type,
+        "_version": 1,
+        "found": true,
+        "_source": angular.toJson(body)
+      }];
+      var docid = this._state.id;
+
+      return $http.post(solrUrl, data)
+      .then(function (resp) {
+        return docid;
+      });
     };
 
     DocSource.prototype.doCreate = function (body) {
-      return sendToEs.call(this, 'create', false, body, []);
+      // Use for checking if index pattern already exists before calling doIndex to overwrite.
+      // return sendToEs.call(this, 'create', false, body, []);
+      var solrUrl = configFile.solr + '/' + this._state.index + '/update?commit=true';
+      var data = [{
+        "_id": this._state.id,
+        "_index": this._state.index,
+        "_type": this._state.type,
+        "_version": 1,
+        "found": true,
+        "_source": angular.toJson(body)
+      }];
+      var docid = this._state.id;
+
+      return $http.post(solrUrl, data)
+      .then(function (resp) {
+        return docid;
+      });
     };
 
     /*****

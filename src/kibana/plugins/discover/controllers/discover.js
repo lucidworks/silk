@@ -38,7 +38,7 @@ define(function (require) {
         .then(function (list) {
           var stateRison = $location.search()._a;
           var state;
-          try { state = rison.decode(stateRison); } catch (e) {}
+          try { state = rison.decode(stateRison); console.log('state json decoded from rison = ',state);} catch (e) {}
           state = state || {};
 
           var specified = !!state.index;
@@ -85,6 +85,7 @@ define(function (require) {
 
     // the saved savedSearch
     var savedSearch = $route.current.locals.savedSearch;
+
     $scope.$on('$destroy', savedSearch.destroy);
 
     // the actual courier.SearchSource
@@ -304,7 +305,6 @@ define(function (require) {
     };
 
     $scope.searchSource.onBeginSegmentedFetch(function (segmented) {
-
       function flushResponseData() {
         $scope.hits = 0;
         $scope.faliures = [];
@@ -418,6 +418,7 @@ define(function (require) {
       });
     }).catch(notify.fatal);
 
+    // TODO
     $scope.updateTime = function () {
       $scope.timeRange = {
         from: datemath.parse(timefilter.time.from),
@@ -469,6 +470,13 @@ define(function (require) {
         $state.columns = _.without($state.columns, name);
         return;
       }
+      // For Solr, we need to add field _source manually.
+      // if (name === '_source' && !field) {
+      //   $state.columns = _.toggleInOut($state.columns, '_source');
+      // } else if (!field) {
+      //   $state.columns = _.without($state.columns, name);
+      //   return;
+      // }
 
       // toggle the display property
       field.display = !field.display;
@@ -527,7 +535,6 @@ define(function (require) {
       // If we're not setting anything up we need to return an empty promise
       if (!$scope.opts.timefield) return Promise.resolve();
       if (loadingVis) return loadingVis;
-
 
       // we shouldn't have a vis, delete it
       if (!$scope.opts.timefield && $scope.vis) {

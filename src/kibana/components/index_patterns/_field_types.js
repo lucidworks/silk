@@ -16,6 +16,18 @@ define(function (require) {
         { name: 'geo_point',  sortable: false,  filterable: false },
         { name: 'geo_shape',  sortable: false,  filterable: false },
         { name: 'attachment', sortable: false,  filterable: false },
+
+        // Solr field types
+        // { name: 'tdate',      sortable: true,   filterable: true  },
+        // { name: 'long',       sortable: true,   filterable: true  },
+        // { name: 'text_en_splitting_tight',       sortable: true,   filterable: true  },
+        // { name: 'text_general', sortable: true,   filterable: true  },
+        // { name: 'float',      sortable: true,   filterable: true  },
+        // { name: 'int',        sortable: true,   filterable: true  },
+        // { name: 'location',   sortable: true,   filterable: true  },
+        // { name: 'location_rpt',   sortable: true,   filterable: true  },
+        // { name: 'text_general_rev', sortable: true,   filterable: true  },
+        // { name: 'payloads',   sortable: true,   filterable: true  }
       ]
     });
   };

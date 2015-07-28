@@ -3,11 +3,41 @@ define(function (require) {
     'kibana/notify'
   ]);
 
-  var configFile = JSON.parse(require('text!config'));
-  configFile.elasticsearch = (function () {
-    var a = document.createElement('a');
-    a.href = 'elasticsearch';
-    return a.href;
+  // var configFile = JSON.parse(require('text!config'));
+  var configFile = {
+    "kibana_index": "system_silkconfig",
+    "default_app_id": "discover",
+    "shard_timeout": 0,
+    "plugins": [
+      "plugins/dashboard/index",
+      "plugins/discover/index",
+      "plugins/doc/index",
+      "plugins/kibana/index",
+      "plugins/markdown_vis/index",
+      "plugins/metric_vis/index",
+      "plugins/settings/index",
+      "plugins/table_vis/index",
+      "plugins/vis_debug_spy/index",
+      "plugins/vis_types/index",
+      "plugins/visualize/index"
+    ],
+    "collectionsApi": "/admin/collections",
+    "silk": "silk"
+  };
+
+  // Define Solr URL in config
+  configFile.solr = (function() {
+    //   Cannot specify query-pipelines here because we use configFile.solr to check for Solr
+    //   in the setup init phase. Refer to /component/setup/steps/check_for_es.js
+    //   The URL location here needs to return status 200 in order to pass the check. Otherwise,
+    //   the dashboard will not load.
+    //
+    //   For example, this is not gonna work:
+    //     var solrUrl = window.location.origin + '/api/apollo/query-pipelines/default/collections';
+
+    // Need to use double /solr because of the proxy code in server side.
+    var solrUrl = window.location.origin + '/solr/solr';
+    return solrUrl;
   }());
 
   // allow the rest of the app to get the configFile easily
@@ -52,7 +82,7 @@ define(function (require) {
     config.init = _.once(function () {
       var complete = notify.lifecycle('config init');
       return kbnSetup()
-      .then(function getDoc() {
+      .then(function getDoc(resp) {
 
         // used to apply an entire es response to the vals, silentAndLocal will prevent
         // event/notifications/writes from occuring.
@@ -62,21 +92,38 @@ define(function (require) {
           });
         };
 
-        return doc.fetch().then(function initDoc(resp) {
-          if (!resp.found) {
-            return doc.doIndex({
-              buildNum: buildNum
-            }).then(getDoc);
-          } else {
-            // apply update, and keep it quiet the first time
-            applyMassUpdate(resp, true);
+        // return doc.fetch().then(function initDoc(resp) {
+        //   if (!resp.found) {
+        //     return doc.doIndex({
+        //       buildNum: buildNum
+        //     }).then(getDoc);
+        //   } else {
+        //     // apply update, and keep it quiet the first time
+        //     applyMassUpdate(resp, true);
 
-            // don't keep it quiet other times
-            doc.onUpdate(function (resp) {
-              applyMassUpdate(resp, false);
-            });
-          }
-        });
+        //     // don't keep it quiet other times
+        //     doc.onUpdate(function (resp) {
+        //       applyMassUpdate(resp, false);
+        //     });
+        //   }
+        // });
+        var savedSettings;
+        try {
+          savedSettings = resp.data.response.docs[0];
+          var defaultIndex = JSON.parse(savedSettings['_source']).defaultIndex;
+          config.set('defaultIndex', defaultIndex);
+        } catch (error) {
+          savedSettings = {
+            '_id': '@@version',
+            '_index': this.kibana_index,
+            '_source': {'buildNum': 9999, 'defaultIndex': 'logs'},
+            '_type': 'config',
+            '_version': 2,
+            'found': true
+          };
+        }
+
+        return savedSettings;
       })
       .then(function () {
         $rootScope.$broadcast('init:config');
@@ -86,7 +133,6 @@ define(function (require) {
 
     config.get = function (key, defaultVal) {
       var keyVal;
-
       if (vals[key] == null) {
         if (defaultVal == null) {
           keyVal = defaults[key].value;

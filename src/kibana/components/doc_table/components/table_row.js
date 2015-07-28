@@ -92,6 +92,12 @@ define(function (require) {
 
         // create a tr element that lists the value for each *column*
         function createSummaryRow(row) {
+
+          // console.log('row =', row);
+          // console.log('$scope.indexPattern =', $scope.indexPattern);
+          // $scope.columns = ['_source']; // This is what is supposed to be to work correctly.
+          // console.log('$scope.columns =', $scope.columns);
+
           // We just create a string here because its faster.
           var newHtmls = [
             openRowHtml

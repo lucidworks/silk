@@ -5,8 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width">
-    <link rel="shortcut icon" href="styles/theme/elk.ico">
-    <title>Kibana 4</title>
+    <title>Silk 4</title>
     <link rel="stylesheet" href="styles/main.css?_b=@@buildNum">
 
   </head>
@@ -17,7 +16,7 @@
         <center>
           <img width="128" alt="Loading Kibana" src="images/initial_load.gif">
           <h1>
-            <strong>Kibana</strong>
+            <strong>Silk</strong>
             <small id="cache-message">is loading. Give me a moment here. I'm loading a whole bunch of code. Don't worry, all this good stuff will be cached up for next time!</small>
           </h1>
         </center>
@@ -33,6 +32,8 @@
     <script src="bower_components/requirejs/require.js?_b=@@buildNum"></script>
     <script src="require.config.js?_b=@@buildNum"></script>
     <script>
+      window.bananaProps = {};
+
       var showCacheMessage = location.href.indexOf('?embed') < 0 && location.href.indexOf('&embed') < 0;
       if (!showCacheMessage) document.getElementById('cache-message').style.display = 'none';
 

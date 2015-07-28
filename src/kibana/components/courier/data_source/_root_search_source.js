@@ -60,8 +60,6 @@ define(function (require) {
       literalRoot.inherits(globalSource);
     }
 
-
-
     /**
      * Sets the appSource to be a new, empty, SearchSource
      * @return {undefined}
