@@ -148,9 +148,6 @@ define(function (require) {
             if (!config.get('defaultIndex')) {
               config.set('defaultIndex', indexPattern.id);
             }
-
-            console.log('indexPattern =', indexPattern);
-
             indexPatterns.cache.clear(indexPattern.id);
             // indexPattern.save(); // Does not seem to do anything
             kbnUrl.change('/settings/indices/' + indexPattern.id);

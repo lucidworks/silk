@@ -85,17 +85,12 @@ define(function (require) {
         // });
 
         return promise.then(function (indexList) {
-          // console.log('indexList =', indexList);
-
-          // This API will only get the static (defined) field list from Solr.
-          // We also need to get the dynamic fields via another API.
-          var solrFieldsUrl = configFile.solr + '/' + indexList + '/schema/fields';
-          var solrDynamicFieldsUrl = configFile.solr + '/' + indexList + '/schema/dynamicfields';
+          // We need to use /admin/luke api to get both static and dynamic fields.
+          // If we use schema api, it will only give the static field list.
+          var solrFieldsUrl = configFile.solr + '/' + indexList + '/admin/luke?wt=json&numTerms=0';
 
           var promiseFields = $http.get(solrFieldsUrl)
           .then(function (resp) {
-            // console.log('Static fields resp =', resp);
-
             // For Solr, we need to manually add _source field.
             var sourceField = {
               "name": "_source",
@@ -106,29 +101,19 @@ define(function (require) {
               "type": "string"
             };
 
-            resp.data.push(sourceField);
-            return resp.data;
-          });
-
-          var promiseDynamicFields = $http.get(solrDynamicFieldsUrl)
-          .then(function (resp) {
-            // console.log('Dynamic fields resp =', resp);
-
-            // Filter out empty indexFields
-            var dynamicFields = _.filter(resp.data, function(field) {
-              return field.indexFields.length > 0;
+            return _.map(resp.data.fields, function (v, k) {
+              v.name = k;
+              v.analyzed = false;
+              if (v.schema.indexOf('I') > -1) {
+                v.indexed = true;
+              } else {
+                v.indexed = false;
+              }
+              return v;
             });
-
-            // Transform the result into proper output format
-            return _.flatten(_.map(dynamicFields, function(field) {
-              var baseProperties = _.omit(field, ['name','indexFields']);
-              return _.map(field.indexFields, function(f) {
-                return _.merge(f, baseProperties);
-              });
-            }));
           });
 
-          return Promise.all([promiseFields, promiseDynamicFields])
+          return Promise.all([promiseFields])
           .then(function (resp) {
             return _.flatten(resp);
           });

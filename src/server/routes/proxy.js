@@ -10,7 +10,7 @@ var url = require('url');
 var target = url.parse(config.solr);
 var join = require('path').join;
 var logger = require('../lib/logger');
-var validateRequest = require('../lib/validateRequest');
+// var validateRequest = require('../lib/validateRequest');
 
 // If the target is backed by an SSL and a CA is provided via the config
 // then we need to inject the CA
@@ -36,7 +36,7 @@ router.use(function (req, res, next) {
 
 router.use(function (req, res, next) {
   try {
-    validateRequest(req);
+    // validateRequest(req);
     return next();
   } catch (err) {
     logger.error({ req: req }, err.message || 'Bad Request');
@@ -77,7 +77,7 @@ router.use(function (req, res, next) {
   options.headers['x-forward-port'] = getPort(req);
   options.headers['x-forward-proto'] = req.connection.pair ? 'https' : 'http';
 
-  logger.info('options.url =', options.url);
+  // logger.info('options.url =', options.url);
 
   // If the server has a custom CA we need to add it to the agent options
   if (customCA) {
