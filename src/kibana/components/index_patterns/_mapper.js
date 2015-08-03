@@ -101,7 +101,7 @@ define(function (require) {
               "type": "string"
             };
 
-            return _.map(resp.data.fields, function (v, k) {
+            var fieldList = _.map(resp.data.fields, function (v, k) {
               v.name = k;
               v.analyzed = false;
               if (v.schema.indexOf('I') > -1) {
@@ -111,6 +111,9 @@ define(function (require) {
               }
               return v;
             });
+
+            fieldList.push(sourceField);
+            return fieldList;
           });
 
           return Promise.all([promiseFields])
