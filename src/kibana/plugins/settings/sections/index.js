@@ -6,6 +6,6 @@ define(function (require) {
     // Hide Advanced tab from Settings page.
     // require('plugins/settings/sections/advanced/index'),
     require('plugins/settings/sections/objects/index'),
-    // require('plugins/settings/sections/about/index')
+    require('plugins/settings/sections/about/index')
   ];
 });
