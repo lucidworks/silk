@@ -52,6 +52,8 @@ npm run server
 
   * Verify that `silkconfig` collection is created in the Solr Admin page.
 
+  _NOTES_: Solr comes with some example data that you can use to get started with Silk. For example, check out the directory `$SOLR_HOME/example/films/` (or the online version [Films example](https://github.com/apache/lucene-solr/tree/trunk/solr/example/films)).
+
 6. Change directory to `$SILK_HOME` and run command `npm run start` to start Silk.
 
     _NOTES_: The first run will take a while, depending on your Internet connection, because Silk needs to download all the necessary Node modules. When it is ready, you should see a message saying `Listening on 0.0.0.0:5601`.
@@ -61,7 +63,9 @@ npm run server
 
 You're up and running! Fantastic! Silk is now running on port 5601, so point your browser at http://YOURDOMAIN.com:5601.
 
-The first screen you arrive at will ask you to configure a **collection**. A collection describes to Silk how to access your data in Solr. We make the guess that you're working with log data, and we hope (because it's awesome) that you're working with Logstash. By default, we fill in `logs` as your collection, thus the only thing you need to do is select which field contains the timestamp you'd like to use. Silk reads your Solr schema to find your time fields - select one from the list and hit *Create*.
+The first screen you arrive at will ask you to configure a **collection**. A collection describes to Silk how to access your data in Solr. We make the guess that you're working with log data. By default, we fill in `logs` as your collection, thus the only thing you need to do is select which field contains the timestamp you'd like to use. Silk reads your Solr schema to find your time fields - select one from the list and hit *Create*.
+
+_NOTES_: If you indexed Solr's [Films example](https://github.com/apache/lucene-solr/tree/trunk/solr/example/films) data, then you should be able to create `films` collection in Silk now. The time field name is `initial_release_date`. However, if you do not want to specify the time field, then uncheck the checkbox for _Collection contains time-based events_. This will allow you to create the collection without the time field (as a filter query), and consequently, the dashboard will perform searches on all documents in the collection.
 
 Congratulations, you have a collection! You should now be looking at a paginated list of the fields in your index or indices, as well as some informative data about them. Silk has automatically set this new collection as your default collection for searching.
 
