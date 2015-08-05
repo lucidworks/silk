@@ -3,28 +3,8 @@ define(function (require) {
     'kibana/notify'
   ]);
 
-  // var configFile = JSON.parse(require('text!config'));
-  var configFile = {
-    "kibana_index": "system_silkconfig",
-    "default_app_id": "discover",
-    "shard_timeout": 0,
-    "plugins": [
-      "plugins/dashboard/index",
-      "plugins/discover/index",
-      "plugins/doc/index",
-      "plugins/kibana/index",
-      "plugins/markdown_vis/index",
-      "plugins/metric_vis/index",
-      "plugins/settings/index",
-      "plugins/table_vis/index",
-      "plugins/vis_debug_spy/index",
-      "plugins/vis_types/index",
-      "plugins/visualize/index"
-    ],
-    "collectionsApi": "/admin/collections",
-    "silk": "silk"
-  };
-
+  var configFile = JSON.parse(require('text!config'));
+  configFile.collectionsApi = '/admin/collections';
   // Define Solr URL in config
   configFile.solr = (function() {
     //   Cannot specify query-pipelines here because we use configFile.solr to check for Solr

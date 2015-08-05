@@ -12,25 +12,7 @@ define(function (require) {
   require('angular-route');
   require('angular-bindonce');
 
-  // var configFile = JSON.parse(require('text!config'));
-  var configFile = {
-    "kibana_index": "system_silkconfig",
-    "default_app_id": "discover",
-    "shard_timeout": 0,
-    "plugins": [
-      "plugins/dashboard/index",
-      "plugins/discover/index",
-      "plugins/doc/index",
-      "plugins/kibana/index",
-      "plugins/markdown_vis/index",
-      "plugins/metric_vis/index",
-      "plugins/settings/index",
-      "plugins/table_vis/index",
-      "plugins/vis_debug_spy/index",
-      "plugins/vis_types/index",
-      "plugins/visualize/index"
-    ]
-  };
+  var configFile = JSON.parse(require('text!config'));
 
   var kibana = modules.get('kibana', [
     // list external requirements here
