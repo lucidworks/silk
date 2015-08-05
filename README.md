@@ -6,7 +6,8 @@ The goal is to create a rich and flexible UI, enabling users to rapidly develop 
 
 ## Requirements
 
-- Solr version 5.0 or later.
+- [Solr](http://lucene.apache.org/solr/mirrors-solr-latest-redir.html) 5.0 or later.
+- [Node.js](https://nodejs.org/) 0.12 or later (older versions might work too, but not tested).
 - A modern web browser. The latest version of Chrome and Firefox have been tested to work.
 
 ## Running from development tree
@@ -32,21 +33,29 @@ npm run server
 
 ## Installation
 
-1. Download and install [the latest Solr](http://lucene.apache.org/solr/mirrors-solr-latest-redir.html).
-2. Start Solr in SolrCloud mode by running `$SOLR_HOME/bin/solr start -c` on Unix, or `$SOLR_HOME\bin\solr.cmd start -c` on Windows.
-3. Create a Solr collection named, `silkconfig`, which will store Silk's settings and saved objects like saved searches and dashboards:
+1. Download and install [Node.js](https://nodejs.org/).
+2. Download and install [Solr](http://lucene.apache.org/solr/mirrors-solr-latest-redir.html).
+3. Download [Silk](https://github.com/LucidWorks/silk).
+4. Start Solr in SolrCloud mode by running `$SOLR_HOME/bin/solr start -c` on Unix, or `$SOLR_HOME\bin\solr.cmd start -c` on Windows.
+5. Create a Solr collection named, `silkconfig`, which will store Silk's settings and saved objects like saved searches and dashboards:
   * Copy silkconfig directory to your Solr configsets directory:
+
   ```
   cp -r $SILK_HOME/silkconfig  $SOLR_HOME/server/solr/configsets/
   ```
+
   * Now create `silkconfig` collection:
+
   ```
   $SOLR_HOME/bin/solr create -c silkconfig -d $SOLR_HOME/server/solr/configsets/silkconfig/
   ```
-  * Verify that silkconfig collection is created.
-4. Download [Silk](https://github.com/LucidWorks/silk).
-5. Change directory to `$SILK_HOME` and run command `npm run start` to start Silk.
-6. Open your browser and goto [http://localhost:5601](http://localhost:5601)
+
+  * Verify that `silkconfig` collection is created in the Solr Admin page.
+
+6. Change directory to `$SILK_HOME` and run command `npm run start` to start Silk.
+
+    _NOTES_: The first run will take a while, depending on your Internet connection, because Silk needs to download all the necessary Node modules. When it is ready, you should see a message saying `Listening on 0.0.0.0:5601`.
+7. Open your browser and goto [http://localhost:5601](http://localhost:5601)
 
 ## Quick Start
 
