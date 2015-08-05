@@ -1,17 +1,21 @@
 {
-  "name": "kibana",
-  "version": "0.0.0",
+  "name": "silk",
+  "version": "4.0.0",
   "authors": [
-    "Spencer Alger <spencer@spenceralger.com>"
+    "Andrew Thanalertvisuti <andrew.thanalertvisuti@lucidworks.com>",
+    "Arijit Dasgupta <arijit.dasgupta@lucidworks.com>"
   ],
-  "description": "Browser based analytics and search interface to Logstash and other timestamped data sets stored in ElasticSearch",
+  "description": "Browser based analytics and search interface to Logstash and other timestamped data sets stored in Solr",
   "main": "src/index.html",
   "keywords": [
+    "silk",
+    "banana",
+    "banana4",
     "kibana",
-    "elasticsearch"
+    "solr"
   ],
   "license": "Apache 2.0",
-  "homepage": "http://www.elastic.co/products/kibana",
+  "homepage": "http://lucidworks.com/fusion/silk/",
   "ignore": [
     "**/.*",
     "node_modules",
