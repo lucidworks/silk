@@ -39,7 +39,6 @@ npm run server
 4. Start Solr in SolrCloud mode by running `$SOLR_HOME/bin/solr start -c` on Unix, or `$SOLR_HOME\bin\solr.cmd start -c` on Windows.
 5. Create a Solr collection named, `silkconfig`, which will store Silk's settings and saved objects like saved searches and dashboards:
   
-
   * Run this command to create `silkconfig` collection:
 
   ```
@@ -88,9 +87,7 @@ __A__: Yes, you can BUT some functionalities will not work. For example, all of 
 
 ## Support
 
-If you have any questions, please contact:
-- Andrew Thanalertvisuti (andrew.thanalertvisuti@lucidworks.com)
-- Arijit Dasgupta (arijit.dasgupta@lucidworks.com)
+If you have any questions or comments, please visit our [Google Group Forum](https://groups.google.com/forum/#!forum/lucidworks-silk).
 
 ## Trademarks
 
