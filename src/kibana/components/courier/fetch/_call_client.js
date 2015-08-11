@@ -120,15 +120,17 @@ define(function (require) {
               var field = _.keys(filterObj.query.match)[0];
 
               if (field) {
+                // Take care of the 'match' filter condition.
                 var query = filterObj.query.match[field].query;
                 return 'fq=' + prefix + field + ':"' + query + '"';
               } else {
                 // In case query === '*' or '*:*', we will not need to include fq, just return ''.
+                // For query_string, we should not put double quotes around the filter.
                 var query = filterObj.query.query_string.query;
                 if (query === '*' || query === '*:*') {
                   return '';
                 } else {
-                  return 'fq=' + prefix + '"' + query + '"';
+                  return 'fq=' + query;
                 }
               }
             }
