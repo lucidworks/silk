@@ -38,16 +38,12 @@ npm run server
 3. Download [Silk](https://github.com/LucidWorks/silk).
 4. Start Solr in SolrCloud mode by running `$SOLR_HOME/bin/solr start -c` on Unix, or `$SOLR_HOME\bin\solr.cmd start -c` on Windows.
 5. Create a Solr collection named, `silkconfig`, which will store Silk's settings and saved objects like saved searches and dashboards:
-  * Copy silkconfig directory to your Solr configsets directory:
+  
+
+  * Run this command to create `silkconfig` collection:
 
   ```
-  cp -r $SILK_HOME/silkconfig  $SOLR_HOME/server/solr/configsets/
-  ```
-
-  * Now create `silkconfig` collection:
-
-  ```
-  $SOLR_HOME/bin/solr create -c silkconfig -d $SOLR_HOME/server/solr/configsets/silkconfig/
+  $SOLR_HOME/bin/solr create -c silkconfig -d $SILK_HOME/silkconfig/
   ```
 
   * Verify that `silkconfig` collection is created in the Solr Admin page.
