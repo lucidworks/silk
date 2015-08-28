@@ -7,6 +7,7 @@ require.config({
     errors: 'components/errors',
     modules: 'utils/modules',
     lodash: 'utils/_mixins',
+    'latlon-geohash': 'utils/latlon-geohash',
 
     // bower_components
     'angular-bindonce': 'bower_components/angular-bindonce/bindonce',

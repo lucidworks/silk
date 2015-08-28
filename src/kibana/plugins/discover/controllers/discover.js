@@ -38,9 +38,11 @@ define(function (require) {
         .then(function (list) {
           var stateRison = $location.search()._a;
           var state;
-          try { state = rison.decode(stateRison); console.log('state json decoded from rison = ',state);} catch (e) {}
+          try {
+            state = rison.decode(stateRison);
+            // console.log('state json decoded from rison = ',state);
+          } catch (e) {}
           state = state || {};
-
           var specified = !!state.index;
           var exists = _.contains(list, state.index);
           var id = exists ? state.index : config.get('defaultIndex');

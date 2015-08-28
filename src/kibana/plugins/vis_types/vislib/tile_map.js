@@ -25,7 +25,9 @@ define(function (require) {
           title: 'Value',
           min: 1,
           max: 1,
-          aggFilter: ['count', 'avg', 'sum', 'min', 'max', 'cardinality'],
+          // aggFilter: ['count', 'avg', 'sum', 'min', 'max', 'cardinality'],
+          // Disable 'avg', 'sum', 'min', 'max', 'cardinality' aggFilter. We don't support it yet.
+          aggFilter: ['count'],
           defaults: [
             { schema: 'metric', type: 'count' }
           ]

@@ -1,6 +1,7 @@
 define(function (require) {
   return function CourierFetchCallClient(Private, Promise, es, configFile, sessionId, $http) {
     var _ = require('lodash');
+    var latlonGeohash = require('latlon-geohash');
 
     var isRequest = Private(require('components/courier/fetch/_is_request'));
     var mergeDuplicateRequests = Private(require('components/courier/fetch/_merge_duplicate_requests'));
@@ -353,6 +354,7 @@ define(function (require) {
           }
         }
 
+        /************** Now we start to parse reqsFetchParams **************/
         // reqsFetchParams is an array of requests, we have to process them all.
         var clientPromises = _.map(reqsFetchParams, function (req) {
           // console.log('reqsFetchParams req =', req);
@@ -362,6 +364,8 @@ define(function (require) {
           var metricId; // Each aggregate will contain metricId.
           var metricIdForBucket; // Used for storing subMetricId in Filters bucket agg.
           var aggType; // Determine stats func inside aggs object.
+          var locationField; // For geospatial search.
+          var precision; // For geohash encode.
 
           //Facet check
           if (strategy.clientMethod === 'msearch') {
@@ -418,6 +422,7 @@ define(function (require) {
                  *     range
                  *     terms
                  *     filters
+                 *     geohash_grid
                  *
                  * NOTES: If the request contains both buckets and metrics (for example, to compute stats on facet.range),
                  *        then item will contain another 'aggs' obj with its own metricIds for each of the metrics that
@@ -476,6 +481,16 @@ define(function (require) {
                   _.each(item.filters.filters, function (filterObj) {
                     facetQuery += '&facet.query=' + filterObj.query.query_string.query;
                   });
+                }
+
+                if (_.has(item, 'geohash_grid')) {
+                  aggregationType.push('geohash_grid');
+                  bucketFacet = 'geohash_grid';
+                  locationField = item.geohash_grid.field;
+                  precision = item.geohash_grid.precision;
+                  // TESTING
+                  // Use facetQuery variable for geo query. BUT we currently have no way to specify bbox and d in UI.
+                  // facetQuery = '&spatial=true&fq=%7B!bbox%7D&pt=35%2C-97&d=10&sfield=' + locationField;
                 }
                 /************** end of Buckets **************/
                 /************** Metrics *******************/
@@ -847,6 +862,41 @@ define(function (require) {
                 }
                 aggregations[metricId] = { buckets };
               }
+
+              if (aggregationType.indexOf('geohash_grid') !== -1) {
+                var buckets = [];
+                if (aggregationType.indexOf('aggs') === -1) {
+                  // For Count metric
+                  //   Example:
+                  //     buckets = [
+                  //       { "key": "svz", "doc_count": 10000 },
+                  //       { "key": "sv8", "doc_count": 3000 }
+                  //     ];
+                  buckets = _.compact(_.map(docs, function(doc) {
+                    if (doc._source[locationField]) {
+                      var latlon = doc._source[locationField].split(',');
+                      var lat, lon;
+
+                      if (latlon.length === 2) {
+                        lat = latlon[0];
+                        lon = latlon[1];
+                      } else {
+                        defer.reject('Geo field is not the correct format.');
+                      }
+
+                      return {
+                        'key': latlonGeohash.encode(lat, lon, precision)
+                      }
+                    }
+                  }));
+                  // Need to sum doc_count values for the same key in buckets.
+                  buckets = _.map(_.countBy(buckets, 'key'), function(v,k) {
+                    return {'key': k, 'doc_count': v}
+                  });
+
+                }
+                aggregations[metricId] = { buckets };
+              }
               /*************** end of Buckets aggregations ***************/
               /************** Metrics aggregations ****************/
               if (statsField) {
@@ -888,9 +938,7 @@ define(function (require) {
                 }
               }
               /************** end of Metrics aggregations ****************/
-
               // console.log("aggregations = ", aggregations);
-
               var clientResp = [
                 {
                   "_shards": {
@@ -908,16 +956,14 @@ define(function (require) {
                   "took": qtime
                 }
               ];
-
+              // console.log('clientResp =',clientResp);
               return clientResp;
             } else if (strategy.clientMethod === 'mget') {
               // Deserialize _source field into JSON and convert clientResp into array for ES compat
               var clientResp = resp.data.response.docs[0];
               clientResp._source = angular.fromJson(clientResp._source);
               clientResp = [clientResp];
-
               // console.log('mget clientResp =', clientResp);
-
               return clientResp;
             }
           });

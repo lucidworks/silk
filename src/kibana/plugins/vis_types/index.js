@@ -6,6 +6,5 @@ define(function (require) {
   visTypes.register(require('plugins/vis_types/vislib/line'));
   visTypes.register(require('plugins/vis_types/vislib/pie'));
   visTypes.register(require('plugins/vis_types/vislib/area'));
-  // Disable tile_map, it's not working with Solr geospatial search yet.
-  // visTypes.register(require('plugins/vis_types/vislib/tile_map'));
+  visTypes.register(require('plugins/vis_types/vislib/tile_map'));
 });
