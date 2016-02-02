@@ -6,7 +6,10 @@ var plugins = function (dir) {
   if (!dir) return [];
   var files = glob.sync(path.join(dir, '*', 'index.js')) || [];
   return files.map(function (file) {
-    return file.replace(dir, 'plugins').replace(/\.js$/, '');
+    // Fix Windows bug: Plugins load error upon setting a windows dev envirnoment
+    // https://github.com/elastic/kibana/issues/2852
+    //return file.replace(dir, 'plugins').replace(/\.js$/, '');
+    return file.replace(dir.replace(/\\/g, '/'), 'plugins').replace(/\.js$/, '');
   });
 };
 
