@@ -1,0 +1,202 @@
+========================================
+ Silk
+ Copyright 2013-2016 Lucidworks, Inc.
+========================================
+
+This product includes code forked from Kibana 4.
+Copyright (c) 2012-2014 Elasticsearch BV, https://github.com/elastic/kibana/tree/4.0
+
+This product includes the D3.js JavaScript library created by Michael Bostock.
+Copyright (c) 2012 Michael Bostock, https://github.com/mbostock/d3
+
+This product includes Bower - A package manager for the web.
+Copyright (c) 2016 Twitter and other contributors, https://github.com/bower/bower
+
+This product includes ansicolors Javascript library.
+Copyright (c) 2013 Thorsten Lorenz, https://github.com/thlorenz/ansicolors
+
+This product includes Bluebird Javascript library.
+Copyright (c) 2013-2015 Petka Antonov, https://github.com/petkaantonov/bluebird
+
+This product includes body-parser, Node.js body parsing middleware.
+Copyright (c) 2014 Jonathan Ong
+Copyright (c) 2015 Douglas Christopher Wilson
+https://github.com/expressjs/body-parser
+
+This product includes Bunyan, JSON logging library for Node.js.
+Copyright (c) 2016 Trent Mick, Joyent Inc., https://github.com/trentm/node-bunyan
+
+This product includes Commander.js, Node.js command-line interfaces.
+Copyright (c) 2011 TJ Holowaychuk, https://github.com/tj/commander.js
+
+This product includes Node.js compression middleware.
+Copyright (c) 2014 Jonathan Ong
+Copyright (c) 2015 Douglas Christopher Wilson
+https://github.com/expressjs/compression
+
+This product includes cookie-parser for Node.js.
+Copyright (c) 2014 TJ Holowaychuk
+Copyright (c) 2015 Douglas Christopher Wilson
+https://github.com/expressjs/cookie-parser
+
+This product includes debug, node.js debugging utility.
+Copyright (c) 2014 TJ Holowaychuk, https://github.com/visionmedia/debug
+
+This product includes elasticsearch.js Javascript library.
+Copyright (c) 2013 Elasticsearch BV, https://github.com/elastic/elasticsearch-js
+
+This product includes Express, web framework for node.
+Copyright (c) 2009-2014 TJ Holowaychuk
+Copyright (c) 2013-2014 Roman Shtylman
+Copyright (c) 2014-2015 Douglas Christopher Wilson
+https://github.com/strongloop/express
+
+This product includes glob for node.
+Copyright (c) Isaac Z. Schlueter and Contributors, https://github.com/isaacs/node-glob
+
+This product includes http-auth, Node.js package for HTTP basic and digest access authentication.
+Copyright (c) 2016 Gevorg Harutyunyan, https://github.com/gevorg/http-auth
+
+This product includes Jade, Node.js package.
+Copyright (c) Forbes Lindesay, https://github.com/jadejs/jade
+
+This product includes js-yaml, Node.js package.
+Copyright (c) 2011-2015 by Vitaly Puzrin, https://github.com/nodeca/js-yaml
+
+This product includes less-middleware, Node.js package.
+Copyright (c) 2013 Randy Merrill, https://github.com/emberfeather/less.js-middleware
+
+This product includes lodash Javascript library.
+Copyright (c) 2012-2016 The Dojo Foundation, https://github.com/lodash/lodash
+
+This product includes morgan, Node.js package.
+Copyright (c) 2014 Jonathan Ong
+Copyright (c) 2014-2015 Douglas Christopher Wilson
+https://github.com/expressjs/morgan
+
+This product includes request, Node.js package.
+Copyright (c), https://github.com/request/request
+
+This product includes requirefrom, Node.js package.
+Copyright (c), https://github.com/DSKrepps/requireFrom
+
+This product includes semver, Node.js package.
+Copyright (c) Isaac Z. Schlueter and Contributors, https://github.com/npm/node-semver
+
+This product includes serve-favicon, Node.js middleware.
+Copyright (c) 2010 Sencha Inc.
+Copyright (c) 2011 LearnBoost
+Copyright (c) 2011 TJ Holowaychuk
+Copyright (c) 2014-2015 Douglas Christopher Wilson
+https://github.com/expressjs/serve-favicon
+
+This product includes through, Node.js package.
+Copyright (c) 2011 Dominic Tarr, https://github.com/dominictarr/through
+
+This product includes Connect, Node.js package.
+Copyright (c) 2010 Sencha Inc.
+Copyright (c) 2011 LearnBoost
+Copyright (c) 2011-2014 TJ Holowaychuk
+Copyright (c) 2015 Douglas Christopher Wilson
+https://github.com/senchalabs/connect
+
+This product includes EventStream, Node.js package.
+Copyright (c) 2011 Dominic Tarr, https://github.com/dominictarr/event-stream
+
+This product includes Expect.js Javascript library.
+Copyright (c) 2011 Guillermo Rauch, https://github.com/Automattic/expect.js
+
+This product includes Grunt Javascript Task Runner.
+Copyright (c) 2016 "Cowboy" Ben Alman, https://github.com/gruntjs/grunt
+
+This product includes html-entities, Node.js package.
+Copyright (c) 2013 Dulin Marat, https://github.com/mdevils/node-html-entities
+
+This product includes http-proxy, Node.js package.
+Copyright (c) 2013 Nodejitsu, https://github.com/nodejitsu/node-http-proxy
+
+This product includes husky, Node.js package.
+Copyright (c) 2014 typicode, https://github.com/typicode/husky
+
+This product includes istanbul, JS code coverage tool.
+Copyright (c) 2012 Yahoo! Inc., https://github.com/gotwarlost/istanbul
+
+This product includes load-grunt-config, Node.js package.
+Copyright (c) 2013 First + Third, https://github.com/firstandthird/load-grunt-config
+
+This product includes marked, Node.js package.
+Copyright (c) 2011-2014 Christopher Jeffrey, https://github.com/chjj/marked
+
+This product includes mkdirp, Node.js package.
+Copyright (c) 2010 James Halliday, https://github.com/substack/node-mkdirp
+
+This product includes Mocha, Javascript test framework for Node.js.
+Copyright (c) 2011-2016 TJ Holowaychuk, https://github.com/mochajs/mocha
+
+This product includes opn, Node.js package.
+Copyright (c) Sindre Sorhus, https://github.com/sindresorhus/opn
+
+This product includes path-browserify, Node.js package.
+Copyright (c) substack, https://github.com/substack/path-browserify
+
+This product includes progress, Node.js package.
+Copyright (c) 2014 TJ Holowaychuk, https://github.com/tj/node-progress
+
+This product includes requirejs, Node.js package.
+Copyright (c) 2010-2014, The Dojo Foundation, https://github.com/jrburke/r.js
+
+This product includes simple-git, Node.js package.
+Copyright (c) 2015 Steve King, https://github.com/steveukx/git-js
+
+This product includes sinon, JavaScript test spies, stubs and mocks.
+Copyright (c) 2010-2014, Christian Johansen, https://github.com/sinonjs/sinon
+
+This product includes tar, Node.js package.
+Copyright (c) Isaac Z. Schlueter and Contributors, https://github.com/npm/node-tar
+
+This product includes grunt-contrib-clean, a Grunt plugin.
+Copyright (c) 2016 Tim Branyen, contributors, https://github.com/gruntjs/grunt-contrib-clean
+
+This product includes grunt-contrib-compress, a Grunt plugin.
+Copyright (c) 2016 Chris Talkington, contributors, https://github.com/gruntjs/grunt-contrib-compress
+
+This product includes grunt-contrib-copy, a Grunt plugin.
+Copyright (c) 2016 Chris Talkington, contributors, https://github.com/gruntjs/grunt-contrib-copy
+
+This product includes grunt-contrib-jade, a Grunt plugin.
+Copyright (c) 2016 Eric Woroshow, contributors, https://github.com/gruntjs/grunt-contrib-jade
+
+This product includes grunt-contrib-jshint, a Grunt plugin.
+Copyright (c) 2016 "Cowboy" Ben Alman, contributors, https://github.com/gruntjs/grunt-contrib-jshint
+
+This product includes grunt-contrib-less, a Grunt plugin.
+Copyright (c) 2016 Tyler Kellen, contributors, https://github.com/gruntjs/grunt-contrib-less
+
+This product includes grunt-contrib-requirejs, a Grunt plugin.
+Copyright (c) 2016 Tyler Kellen, contributors, https://github.com/gruntjs/grunt-contrib-requirejs
+
+This product includes grunt-contrib-watch, a Grunt plugin.
+Copyright (c) 2016 "Cowboy" Ben Alman, contributors, https://github.com/gruntjs/grunt-contrib-watch
+
+This product includes grunt-esvm, a Grunt plugin.
+Copyright (c) 2013 Spencer Alger, https://github.com/kreeware/grunt-esvm
+
+This product includes grunt-mocha, a Grunt plugin.
+Copyright (c) 2012 Kelly Miyashiro
+Copyright (c) 2012 "Cowboy" Ben Alman
+https://github.com/kmiyashiro/grunt-mocha
+
+This product includes grunt-replace, a Grunt plugin.
+Copyright (c) 2015 outaTiME, https://github.com/outatime/grunt-replace
+
+This product includes grunt-run, a Grunt plugin.
+Copyright (c) 2013 Spencer Alger, https://github.com/spalger/grunt-run
+
+This product includes grunt-s3, a Grunt plugin.
+Copyright (c) 2012 Aaron Forsander, https://github.com/pifantastic/grunt-s3
+
+This product includes grunt-saucelabs, a Grunt plugin.
+Copyright (c) 2012 Parashuram, https://github.com/axemclion/grunt-saucelabs
+
+This product includes grunt-simple-mocha, a Grunt plugin.
+Copyright (c) 2012 Mukund Lakshman, https://github.com/yaymukund/grunt-simple-mocha
