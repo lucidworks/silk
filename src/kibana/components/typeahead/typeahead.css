@@ -1,0 +1,101 @@
+.thumbnail > img,
+.thumbnail a > img,
+.carousel-inner > .item > img,
+.carousel-inner > .item > a > img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+.btn-group-lg > .btn {
+  padding: 18px 27px;
+  font-size: 17px;
+  line-height: 1.33;
+  border-radius: 6px;
+}
+.btn-group-sm > .btn {
+  padding: 6px 9px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.btn-group-xs > .btn {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+.container:before,
+.container:after,
+.container-fluid:before,
+.container-fluid:after,
+.row:before,
+.row:after,
+.form-horizontal .form-group:before,
+.form-horizontal .form-group:after,
+.btn-toolbar:before,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:before,
+.btn-group-vertical > .btn-group:after,
+.nav:before,
+.nav:after,
+.navbar:before,
+.navbar:after,
+.navbar-header:before,
+.navbar-header:after,
+.navbar-collapse:before,
+.navbar-collapse:after,
+.pager:before,
+.pager:after,
+.panel-body:before,
+.panel-body:after,
+.modal-footer:before,
+.modal-footer:after {
+  content: " ";
+  display: table;
+}
+.container:after,
+.container-fluid:after,
+.row:after,
+.form-horizontal .form-group:after,
+.btn-toolbar:after,
+.btn-group-vertical > .btn-group:after,
+.nav:after,
+.navbar:after,
+.navbar-header:after,
+.navbar-collapse:after,
+.pager:after,
+.panel-body:after,
+.modal-footer:after {
+  clear: both;
+}
+.typeahead {
+  position: relative;
+}
+.typeahead .typeahead-items {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #444444;
+  background-color: #ffffff;
+  position: absolute;
+  z-index: 1030;
+  width: 100%;
+}
+.typeahead .typeahead-items .typeahead-item {
+  border-bottom: 1px solid rgba(153, 153, 153, 0.2);
+  padding: 5px 15px;
+}
+.typeahead .typeahead-items .typeahead-item:last-child {
+  border-bottom: 0px;
+}
+.typeahead .typeahead-items .typeahead-item.active {
+  background-color: #ecf0f1;
+}
+.button-group .typeahead.visible .input-group > :first-child,
+.inline-form .typeahead.visible .input-group > :first-child {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.button-group .typeahead.visible .input-group > :last-child,
+.inline-form .typeahead.visible .input-group > :last-child {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
