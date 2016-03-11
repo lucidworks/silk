@@ -11,8 +11,7 @@ http.globalAgent.maxSockets = config.maxSockets;
 https.globalAgent.maxSockets = config.maxSockets;
 var logger = require('./lib/logger');
 var Promise = require('bluebird');
-// TODO: port to work with Solr client in js.
-// var initialization = require('./lib/serverInitialization');
+var initialization = require('./lib/serverInitialization');
 var key, cert;
 try {
   key = fs.readFileSync(config.kibana.ssl_key_file, 'utf8');
@@ -84,19 +83,8 @@ function start() {
 module.exports = {
   server: server,
   start: function (cb) {
-    // return initialization()
-    //   .then(start)
-    //   .then(function () {
-    //     cb && cb();
-    //   }, function (err) {
-    //     logger.error({ err: err });
-    //     if (cb) {
-    //       cb(err);
-    //     } else {
-    //       process.exit();
-    //     }
-    //   });
-    return start()
+    return initialization()
+      .then(start)
       .then(function () {
         cb && cb();
       }, function (err) {

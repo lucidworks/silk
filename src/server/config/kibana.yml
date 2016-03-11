@@ -14,7 +14,8 @@ elasticsearch_preserve_host: true
 
 # Kibana uses an index in Elasticsearch to store saved searches, visualizations
 # and dashboards. It will create a new index if it doesn't already exist.
-kibana_index: "silkconfig"
+kibana_index: ".kibana"
+banana_index: "banana"
 
 # If your Elasticsearch is protected with basic auth, this is the user credentials
 # used by the Kibana server to perform maintence on the kibana_index at statup. Your Kibana

@@ -4,13 +4,11 @@ var logger = require('./logger');
 var _ = require('lodash');
 var util = require('util');
 var url = require('url');
-// var uri = url.parse(config.elasticsearch);
-var uri = url.parse(config.solr);
-
+var uri = url.parse(config.elasticsearch);
+// var uri = url.parse(config.solr);
 if (config.kibana.kibana_elasticsearch_username && config.kibana.kibana_elasticsearch_password) {
   uri.auth = util.format('%s:%s', config.kibana.kibana_elasticsearch_username, config.kibana.kibana_elasticsearch_password);
 }
-
 module.exports = new elasticsearch.Client({
   host: url.format(uri),
   log: function (config) {
@@ -24,3 +22,4 @@ module.exports = new elasticsearch.Client({
     this.close = _.noop;
   }
 });
+

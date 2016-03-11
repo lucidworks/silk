@@ -13,8 +13,7 @@ var package = require(packagePath);
 
 program.description('Kibana is an open source (Apache Licensed), browser based analytics and search dashboard for Elasticsearch.');
 program.version(package.version);
-// program.option('-e, --elasticsearch <uri>', 'Elasticsearch instance');
-program.option('-s, --solr <uri>', 'Solr instance');
+program.option('-e, --elasticsearch <uri>', 'Elasticsearch instance');
 program.option('-c, --config <path>', 'Path to the config file');
 program.option('-p, --port <port>', 'The port to bind to', parseInt);
 program.option('-q, --quiet', 'Turns off logging');
@@ -39,11 +38,8 @@ if (program.plugins) {
 // Load the config
 var config = require('../config');
 
-// if (program.elasticsearch) {
-//   config.elasticsearch = program.elasticsearch;
-// }
-if (program.solr) {
-  config.solr = program.solr;
+if (program.elasticsearch) {
+  config.elasticsearch = program.elasticsearch;
 }
 
 if (program.port) {

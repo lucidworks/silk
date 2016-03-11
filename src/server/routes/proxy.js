@@ -6,11 +6,12 @@ var express = require('express');
 var _ = require('lodash');
 var fs = require('fs');
 var url = require('url');
-// var target = url.parse(config.elasticsearch);
-var target = url.parse(config.solr);
+var target = url.parse(config.elasticsearch);
+// var target = url.parse(config.solr);
 var join = require('path').join;
 var logger = require('../lib/logger');
-// var validateRequest = require('../lib/validateRequest');
+var validateRequest = require('../lib/validateRequest');
+
 
 // If the target is backed by an SSL and a CA is provided via the config
 // then we need to inject the CA
@@ -36,7 +37,7 @@ router.use(function (req, res, next) {
 
 router.use(function (req, res, next) {
   try {
-    // validateRequest(req);
+    validateRequest(req);
     return next();
   } catch (err) {
     logger.error({ req: req }, err.message || 'Bad Request');
@@ -65,8 +66,8 @@ router.use(function (req, res, next) {
   }
 
   var options = {
-    // url: config.elasticsearch + path,
-    url: config.solr + path,
+    url: config.elasticsearch + path,
+    // url: config.solr + path,
     method: req.method,
     headers: _.defaults({ host: target.hostname }, req.headers),
     strictSSL: config.kibana.verify_ssl,
@@ -76,8 +77,6 @@ router.use(function (req, res, next) {
   options.headers['x-forward-for'] = req.connection.remoteAddress || req.socket.remoteAddress;
   options.headers['x-forward-port'] = getPort(req);
   options.headers['x-forward-proto'] = req.connection.pair ? 'https' : 'http';
-
-  // logger.info('options.url =', options.url);
 
   // If the server has a custom CA we need to add it to the agent options
   if (customCA) {
@@ -107,11 +106,11 @@ router.use(function (req, res, next) {
     var body = { message: 'Bad Gateway' };
 
     if (err.code === 'ECONNREFUSED') {
-      body.message = 'Unable to connect to Solr';
+      body.message = 'Unable to connect to Elasticsearch';
     }
 
     if (err.message === 'DEPTH_ZERO_SELF_SIGNED_CERT') {
-      body.message = 'SSL handshake with Solr failed';
+      body.message = 'SSL handshake with Elasticsearch failed';
     }
 
     body.err = err.message;
@@ -120,14 +119,14 @@ router.use(function (req, res, next) {
 
   // Print out the response from ES
   // TODO: This is where we will write the Solr-ES translator
-  // esRequest.on('response', function (response) {
-  //   // console.log('esRequest response =', response);
-  //   response.on('data', function (buf) {
-  //     console.log('res buf =', buf.toString());
-  //     console.log('options.method =', options.method);
-  //     console.log('options.body =', options.body);
-  //   });
-  // });
+  esRequest.on('response', function (response) {
+    // console.log('esRequest response =', response);
+    response.on('data', function (buf) {
+      console.log('res buf =', buf.toString());
+      console.log('options.method =', options.method);
+      console.log('options.body =', options.body);
+    });
+  });
 
   esRequest.pipe(res);
 });

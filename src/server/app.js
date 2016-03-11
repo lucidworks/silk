@@ -31,8 +31,7 @@ if (app.get('env') === 'development') {
 // The proxy must be set up before all the other middleware.
 // TODO: WE might want to move the middleware to each of the individual routes
 // so we don't have weird conflicts in the future.
-// app.use('/elasticsearch', proxy);
-app.use('/solr', proxy);
+app.use('/elasticsearch', proxy);
 app.use('/enforcer', require('./lib/enforce'));
 
 app.use(bodyParser.json());
