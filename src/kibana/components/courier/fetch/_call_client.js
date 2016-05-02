@@ -117,9 +117,11 @@ define(function (require) {
               prefix = '-'; // must_not
             }
 
+            var field;
+
             if (filterObj.query) {
               // Inside query, there could be different possible property values for the nested json.
-              var field = _.keys(filterObj.query.match)[0];
+              field = _.keys(filterObj.query.match)[0];
 
               if (field) {
                 // Take care of the 'match' filter condition.
@@ -140,7 +142,7 @@ define(function (require) {
             // For Quick and Relative time modes, the filter value will be string like now, now-15m, and etc.
             // However, for Absolute time mode, the filter value will be a Time object.
             if (filterObj.range) {
-              var field = _.keys(filterObj.range)[0];
+              field = _.keys(filterObj.range)[0];
 
               return 'fq=' + prefix + field + ':[' + convertTime(filterObj.range[field].from) +
                 ' TO ' + convertTime(filterObj.range[field].to) + ']';
