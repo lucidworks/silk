@@ -1,3 +1,4 @@
+/* jshint latedef: false */
 define(function (require) {
   var _ = require('lodash');
 
