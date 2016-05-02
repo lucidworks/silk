@@ -62,12 +62,12 @@ define(function (require) {
   };
 
   // returns a count of fields in the array that are undefined or null
-  var _countMissing = function (array) {
+  var _countMissing = function (array) { // jshint ignore:line
     return array.length - _.without(array, undefined, null).length;
   };
 
 
-  var _groupValues = function (allValues, params) {
+  var _groupValues = function (allValues, params) { // jshint ignore:line
     var groups = {},
     value, k;
 

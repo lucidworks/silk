@@ -100,7 +100,7 @@ define(function (require) {
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         // ALWAYS CALL makePanelSerializeable AFTER YOU ARE DONE WITH IT
         // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        var getPanelFor = function (el) {
+        var getPanelFor = function (el) { // jshint ignore:line
           var $el = el.jquery ? el : $(el);
           var panel = $el.data('panel');
 
@@ -113,13 +113,13 @@ define(function (require) {
         // since the $el and $scope are circular structures, they need to be
         // removed from panel before it can be serialized (we also wouldn't
         // want them to show up in the url)
-        var makePanelSerializeable = function (panel) {
+        var makePanelSerializeable = function (panel) { // jshint ignore:line
           delete panel.$el;
           delete panel.$scope;
         };
 
         // tell gridster to remove the panel, and cleanup our metadata
-        var removePanel = function (panel) {
+        var removePanel = function (panel) { // jshint ignore:line
           // remove from grister 'silently' (don't reorganize after)
           gridster.remove_widget(panel.$el);
 
@@ -131,7 +131,7 @@ define(function (require) {
         };
 
         // tell gridster to add the panel, and create additional meatadata like $scope
-        var addPanel = function (panel) {
+        var addPanel = function (panel) { // jshint ignore:line
           _.defaults(panel, {
             size_x: 3,
             size_y: 2
@@ -166,7 +166,7 @@ define(function (require) {
         };
 
         // ensure that the panel object has the latest size/pos info
-        var refreshPanelStats = function (panel) {
+        var refreshPanelStats = function (panel) { // jshint ignore:line
           var data = panel.$el.coords().grid;
           panel.size_x = data.size_x;
           panel.size_y = data.size_y;
@@ -175,7 +175,7 @@ define(function (require) {
         };
 
         // when gridster tell us it made a change, update each of the panel objects
-        var readGridsterChangeHandler = function (e, ui, $widget) {
+        var readGridsterChangeHandler = function (e, ui, $widget) { // jshint ignore:line
           // ensure that our panel objects keep their size in sync
           gridster.$widgets.each(function (i, el) {
             var panel = getPanelFor(el);
@@ -221,7 +221,7 @@ define(function (require) {
           complete();
         };
 
-        var safeLayout = _.debounce(layout, 200);
+        var safeLayout = _.debounce(layout, 200); // jshint ignore:line
 
         init();
       }

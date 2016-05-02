@@ -30,7 +30,7 @@ define(function (require) {
       });
 
       // handle a request being aborted while being fetched
-      var requestWasAborted = Promise.method(function (req, i) {
+      var requestWasAborted = Promise.method(function (req, i) { // jshint ignore:line
         if (statuses[i] === ABORTED) {
           defer.reject(new Error('Request was aborted twice?'));
         }
@@ -51,7 +51,7 @@ define(function (require) {
       });
 
       // for each respond with either the response or ABORTED
-      var respond = function (responses) {
+      var respond = function (responses) { // jshint ignore:line
         responses = responses || [];
         return Promise.map(requests, function (req, i) {
           switch (statuses[i]) {
@@ -330,7 +330,7 @@ define(function (require) {
 
         // This function will also take care of the non-moment objects.
         // Function to convert time object to DateMathParser type string.
-        var convertTime = function (timeObject) {
+        var convertTime = function (timeObject) { // jshint ignore:line
           // console.log("timeObject = ", timeObject);
           if (timeObject._isAMomentObject) {
             var i = timeObject._d;

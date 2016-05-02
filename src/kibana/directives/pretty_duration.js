@@ -48,7 +48,7 @@ define(function (require) {
           }
         };
 
-        var cantLookup = function () {
+        var cantLookup = function () { // jshint ignore:line
           var display = {};
           _.each(['from', 'to'], function (time) {
             if (moment.isMoment($scope[time])) {

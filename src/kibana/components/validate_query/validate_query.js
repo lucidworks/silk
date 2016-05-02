@@ -30,7 +30,7 @@ define(function (require) {
             validator($scope.ngModel);
           };
 
-          var validator = function (query) {
+          var validator = function (query) { // jshint ignore:line
             var index, type;
             if (request.abort) request.abort();
 
