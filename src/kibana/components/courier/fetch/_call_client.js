@@ -87,11 +87,11 @@ define(function (require) {
          */
         var parseQueryString = function (query) { //TODO: Make the pattern better, maybe, sometimes?
           if(query.replace(/\s/, '') === ''){
-            return '*:*'
+            return '*:*';
           } else {
             return query;
           }
-        }
+        };
 
         /**
          * Parse ES filter queries into Solr fq queries.
@@ -163,7 +163,7 @@ define(function (require) {
           }
 
           return fqArray;
-        }
+        };
 
         // TODO: This function overlaps with convertToSolrDateTime(), need refactor
         var convertTimeUnit = function (timeString) {
@@ -199,7 +199,7 @@ define(function (require) {
               newUnit = '';
           }
           return '+' + numeral + newUnit;
-        }
+        };
 
         var getTimeUnit = function (timeString) {
           var timeUnits = ['YEAR','MONTH','DAY','HOUR','MINUTE','SECOND'];
@@ -317,17 +317,17 @@ define(function (require) {
           }
 
           return timeString;
-        }
+        };
 
         var roundOff = function (number, roundToN) {
           var rounded = '';
-          var numberLength = number.toString().length
+          var numberLength = number.toString().length;
           for(var i = numberLength; i < roundToN; i+=1){
             rounded += '0';
           }
           rounded += number.toString();
           return rounded;
-        }
+        };
 
         // This function will also take care of the non-moment objects.
         // Function to convert time object to DateMathParser type string.
@@ -353,7 +353,7 @@ define(function (require) {
           } else {
             return convertToSolrDateTime(timeObject);
           }
-        }
+        };
 
         /************** Now we start to parse reqsFetchParams **************/
         // reqsFetchParams is an array of requests, we have to process them all.
@@ -404,7 +404,7 @@ define(function (require) {
                   return false;
                 }
               })[0];
-            }
+            };
 
             // These ifs are very imparative. please check the values that are already on the params before doing anything rash! 
             if (!_.isEmpty(aggs)) { //Aggregations
@@ -548,7 +548,7 @@ define(function (require) {
                         field: item.terms.field,
                         limit: item.terms.size,
                         facet: {}
-                      }
+                      };
                       jsonFacet[subMetricId][bucketFacet].facet[aggType] = aggType + '(' + aggObj[aggType].field + ')';
 
                     } else if (bucketFacet === 'query') {
@@ -585,7 +585,7 @@ define(function (require) {
                           end: to,
                           gap: encodeURIComponent(convertTimeUnit(item.date_histogram.interval)),
                           facet: {}
-                        }
+                        };
                         jsonFacet[subMetricId][bucketFacet].facet[aggType] = aggType + '(' + aggObj[aggType].field + ')';
 
                       } else if (aggregationType.indexOf('range') !== -1) {
@@ -599,7 +599,7 @@ define(function (require) {
                               q: item.range.field + ':[' + rangeObj.from + ' TO ' + rangeObj.to + ']',
                               facet: {}
                             }
-                          }
+                          };
                           jsonFacet[rangeName].query.facet[aggType] = aggType + '(' + aggObj[aggType].field + ')';
                         });
 
@@ -669,7 +669,7 @@ define(function (require) {
 
           var solrReqConfig = {
             headers: {'Content-type':'application/x-www-form-urlencoded'}
-          }
+          };
 
           return $http.post(solrReqUrl, solrReqData, solrReqConfig)
           .then(function (resp) {
@@ -746,7 +746,7 @@ define(function (require) {
                         aggregations[metricId].buckets[i].key = new Date(bucketItem.val).getTime();
                         aggregations[metricId].buckets[i][subMetricId] = {
                           value: bucketItem[aggType] || 0
-                        }
+                        };
                         delete bucketItem.val;
                         delete bucketItem.count;
                         delete bucketItem[aggType];
@@ -768,7 +768,7 @@ define(function (require) {
                     return {
                       "doc_count": item,
                       "key": key
-                    }
+                    };
                   });
 
                 } else {
@@ -782,7 +782,7 @@ define(function (require) {
                         aggregations[metricId].buckets[i].doc_count = bucketItem.count;
                         aggregations[metricId].buckets[i][subMetricId] = {
                           value: bucketItem[aggType] || 0
-                        }
+                        };
                         delete bucketItem.val;
                         delete bucketItem.count;
                         delete bucketItem[aggType];
@@ -818,13 +818,13 @@ define(function (require) {
                       from_as_string: parsedKeys[1],
                       to: Number(parsedKeys[2]),
                       to_as_string: parsedKeys[2]
-                    }
+                    };
                   });
 
                 } else {
                   buckets = _.transform(resp.data.facets, function (result, facetObj, key) {
                     // e.g. key => '0-500'
-                    if (key === 'count') return {}
+                    if (key === 'count') return {};
 
                     var parsedKeys = key.split('-');
                     result[key] = {
@@ -833,7 +833,7 @@ define(function (require) {
                       from_as_string: parsedKeys[0],
                       to: Number(parsedKeys[1]),
                       to_as_string: parsedKeys[1]
-                    }
+                    };
                     result[key][metricIdForBucket] = { value: facetObj[aggType] || 0 };
                     return result;
                   });
@@ -849,7 +849,7 @@ define(function (require) {
                   buckets = _.transform(resp.data.facet_counts.facet_queries, function (result, value, key) {
                     return result[key] = {
                       'doc_count': value
-                    }
+                    };
                   });
 
                 } else {
@@ -887,12 +887,12 @@ define(function (require) {
 
                       return {
                         'key': latlonGeohash.encode(lat, lon, precision)
-                      }
+                      };
                     }
                   }));
                   // Need to sum doc_count values for the same key in buckets.
                   buckets = _.map(_.countBy(buckets, 'key'), function(v,k) {
-                    return {'key': k, 'doc_count': v}
+                    return {'key': k, 'doc_count': v};
                   });
 
                 }
@@ -904,25 +904,25 @@ define(function (require) {
                 if (aggregationType.indexOf('avg') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].mean
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('sum') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].sum
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('min') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].min
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('max') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].max
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('extended_stats') !== -1) {
