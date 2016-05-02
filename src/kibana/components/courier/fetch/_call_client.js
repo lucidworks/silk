@@ -1,3 +1,4 @@
+/* globals angular:false */
 define(function (require) {
   return function CourierFetchCallClient(Private, Promise, es, configFile, sessionId, $http) {
     var _ = require('lodash');

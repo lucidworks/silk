@@ -1,3 +1,4 @@
+/* globals angular:false */
 define(function (require) {
   var app = require('modules').get('app/visualize');
   var _ = require('lodash');

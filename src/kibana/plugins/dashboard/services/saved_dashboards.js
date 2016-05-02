@@ -1,3 +1,4 @@
+/* globals angular:false */
 define(function (require) {
   var module = require('modules').get('app/dashboard');
   var _ = require('lodash');
