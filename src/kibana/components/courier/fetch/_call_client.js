@@ -811,9 +811,9 @@ define(function (require) {
                 // This function is for parsing facetQuery to get the values for 'from' and 'to'.
                 // An example of facetQ => "value_d:[0 TO 1000]"
                 // The return value     => ["[0 TO 1000]", "0", "1000"]
-                function parseFacetQueries(facetQ) {
+                var parseFacetQueries = function parseFacetQueries(facetQ) {
                   return facetQ.match(/\[(\d+) TO (\d+)\]/);
-                }
+                };
 
                 buckets = {};
                 if (aggregationType.indexOf('aggs') === -1) {
