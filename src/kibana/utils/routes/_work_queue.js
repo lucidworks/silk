@@ -20,7 +20,7 @@ define(function (require) {
       }
     };
 
-    var resolve = function (defers) {
+    var resolve = function (defers) { // jshint ignore:line
       return defers.splice(0).map(function (defer) {
         return defer.resolve();
       });

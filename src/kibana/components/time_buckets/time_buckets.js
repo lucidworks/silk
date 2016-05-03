@@ -329,13 +329,13 @@ define(function (require) {
         },
       };
 
-      var breakers = {
+      var breakers = { // jshint ignore:line
         setBounds: 'bounds',
         clearBounds: 'bounds',
         setInterval: 'interval'
       };
 
-      var resources = {
+      var resources = { // jshint ignore:line
         bounds: {
           setup: function () {
             return [self._lb, self._ub];

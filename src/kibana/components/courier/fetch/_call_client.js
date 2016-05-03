@@ -1,3 +1,4 @@
+/* globals angular:false */
 define(function (require) {
   return function CourierFetchCallClient(Private, Promise, es, configFile, sessionId, $http) {
     var _ = require('lodash');
@@ -30,7 +31,7 @@ define(function (require) {
       });
 
       // handle a request being aborted while being fetched
-      var requestWasAborted = Promise.method(function (req, i) {
+      var requestWasAborted = Promise.method(function (req, i) { // jshint ignore:line
         if (statuses[i] === ABORTED) {
           defer.reject(new Error('Request was aborted twice?'));
         }
@@ -51,7 +52,7 @@ define(function (require) {
       });
 
       // for each respond with either the response or ABORTED
-      var respond = function (responses) {
+      var respond = function (responses) { // jshint ignore:line
         responses = responses || [];
         return Promise.map(requests, function (req, i) {
           switch (statuses[i]) {
@@ -86,11 +87,11 @@ define(function (require) {
          */
         var parseQueryString = function (query) { //TODO: Make the pattern better, maybe, sometimes?
           if(query.replace(/\s/, '') === ''){
-            return '*:*'
+            return '*:*';
           } else {
             return query;
           }
-        }
+        };
 
         /**
          * Parse ES filter queries into Solr fq queries.
@@ -116,18 +117,21 @@ define(function (require) {
               prefix = '-'; // must_not
             }
 
+            var field;
+
             if (filterObj.query) {
+              var query;
               // Inside query, there could be different possible property values for the nested json.
-              var field = _.keys(filterObj.query.match)[0];
+              field = _.keys(filterObj.query.match)[0];
 
               if (field) {
                 // Take care of the 'match' filter condition.
-                var query = filterObj.query.match[field].query;
+                query = filterObj.query.match[field].query;
                 return 'fq=' + prefix + field + ':"' + query + '"';
               } else {
                 // In case query === '*' or '*:*', we will not need to include fq, just return ''.
                 // For query_string, we should not put double quotes around the filter.
-                var query = filterObj.query.query_string.query;
+                query = filterObj.query.query_string.query;
                 if (query === '*' || query === '*:*') {
                   return '';
                 } else {
@@ -139,7 +143,7 @@ define(function (require) {
             // For Quick and Relative time modes, the filter value will be string like now, now-15m, and etc.
             // However, for Absolute time mode, the filter value will be a Time object.
             if (filterObj.range) {
-              var field = _.keys(filterObj.range)[0];
+              field = _.keys(filterObj.range)[0];
 
               return 'fq=' + prefix + field + ':[' + convertTime(filterObj.range[field].from) +
                 ' TO ' + convertTime(filterObj.range[field].to) + ']';
@@ -162,7 +166,7 @@ define(function (require) {
           }
 
           return fqArray;
-        }
+        };
 
         // TODO: This function overlaps with convertToSolrDateTime(), need refactor
         var convertTimeUnit = function (timeString) {
@@ -198,7 +202,7 @@ define(function (require) {
               newUnit = '';
           }
           return '+' + numeral + newUnit;
-        }
+        };
 
         var getTimeUnit = function (timeString) {
           var timeUnits = ['YEAR','MONTH','DAY','HOUR','MINUTE','SECOND'];
@@ -289,18 +293,19 @@ define(function (require) {
               default:
                 return timeunit;
             }
-          };
+          }
 
           if (timeString === 'now') return timeString.toUpperCase();
 
           if (timeString.substr(0,3) === 'now') {
+            var unitFullString;
             if (timeString.substr(3,1) === '-' || timeString.substr(3,1) === '+') {
               // e.g. now-1d OR now-1d/d
               var timeArray = timeString.substr(4).split('/');
 
               if (timeArray.length === 1) {
                 // e.g. now-1d, now-15m
-                var unitFullString = convertUnit(timeArray[0]);
+                unitFullString = convertUnit(timeArray[0]);
                 return 'NOW' + timeString.substr(3,1) + unitFullString;
               } else {
                 // e.g. now-1d/d, now-15m/m
@@ -310,27 +315,27 @@ define(function (require) {
               }
             } else if (timeString.substr(3,1) === '/') {
               // e.g. now/d
-              var unitFullString = convertUnit(timeString.substr(4,1));
+              unitFullString = convertUnit(timeString.substr(4,1));
               return 'NOW/' + unitFullString;
             }
           }
 
           return timeString;
-        }
+        };
 
         var roundOff = function (number, roundToN) {
           var rounded = '';
-          var numberLength = number.toString().length
+          var numberLength = number.toString().length;
           for(var i = numberLength; i < roundToN; i+=1){
             rounded += '0';
           }
           rounded += number.toString();
           return rounded;
-        }
+        };
 
         // This function will also take care of the non-moment objects.
         // Function to convert time object to DateMathParser type string.
-        var convertTime = function (timeObject) {
+        var convertTime = function (timeObject) { // jshint ignore:line
           // console.log("timeObject = ", timeObject);
           if (timeObject._isAMomentObject) {
             var i = timeObject._d;
@@ -352,7 +357,7 @@ define(function (require) {
           } else {
             return convertToSolrDateTime(timeObject);
           }
-        }
+        };
 
         /************** Now we start to parse reqsFetchParams **************/
         // reqsFetchParams is an array of requests, we have to process them all.
@@ -366,6 +371,7 @@ define(function (require) {
           var aggType; // Determine stats func inside aggs object.
           var locationField; // For geospatial search.
           var precision; // For geohash encode.
+          var q;
 
           //Facet check
           if (strategy.clientMethod === 'msearch') {
@@ -395,7 +401,7 @@ define(function (require) {
               // console.log('fqQueries =', fqQueries);
             }
 
-            function getTimeRangeObject() {
+            var getTimeRangeObject = function getTimeRangeObject() {
               return _.filter(reqFiltered.filter.bool.must, function (item, key) { //TODO: not sure if this will work all the time
                 if (_.has(item, 'range')) {
                   return true;
@@ -403,7 +409,7 @@ define(function (require) {
                   return false;
                 }
               })[0];
-            }
+            };
 
             // These ifs are very imparative. please check the values that are already on the params before doing anything rash! 
             if (!_.isEmpty(aggs)) { //Aggregations
@@ -547,7 +553,7 @@ define(function (require) {
                         field: item.terms.field,
                         limit: item.terms.size,
                         facet: {}
-                      }
+                      };
                       jsonFacet[subMetricId][bucketFacet].facet[aggType] = aggType + '(' + aggObj[aggType].field + ')';
 
                     } else if (bucketFacet === 'query') {
@@ -563,9 +569,11 @@ define(function (require) {
                     } else if (bucketFacet === 'range') {
                       // for data_histogram and range buckets
                       if (aggregationType.indexOf('date_histogram') !== -1) {
+                        var from;
+                        var to;
                         try {
-                          var from = getTimeRangeObject().range[timeField].from;
-                          var to = getTimeRangeObject().range[timeField].to;
+                          from = getTimeRangeObject().range[timeField].from;
+                          to = getTimeRangeObject().range[timeField].to;
                         } catch (error) {
                           var timeField2 = _.map(getTimeRangeObject().range,function(item, key){
                             return key;
@@ -584,7 +592,7 @@ define(function (require) {
                           end: to,
                           gap: encodeURIComponent(convertTimeUnit(item.date_histogram.interval)),
                           facet: {}
-                        }
+                        };
                         jsonFacet[subMetricId][bucketFacet].facet[aggType] = aggType + '(' + aggObj[aggType].field + ')';
 
                       } else if (aggregationType.indexOf('range') !== -1) {
@@ -598,7 +606,7 @@ define(function (require) {
                               q: item.range.field + ':[' + rangeObj.from + ' TO ' + rangeObj.to + ']',
                               facet: {}
                             }
-                          }
+                          };
                           jsonFacet[rangeName].query.facet[aggType] = aggType + '(' + aggObj[aggType].field + ')';
                         });
 
@@ -609,7 +617,7 @@ define(function (require) {
 
                     statsQuery += JSON.stringify(jsonFacet);
                   });
-                } 
+                }
                 /************** end of Metrics *******************/
               });
             }
@@ -627,7 +635,6 @@ define(function (require) {
               fqTimefilter = '&fq=' + timeField + ':[' + from.toUpperCase() + ' TO ' + to.toUpperCase() + ']';
             }
 
-            var q;
             var queryString;
             // console.log('isMatchAll = ', isMatchAll);
             // console.log('reqQueryString = ', reqQueryString);
@@ -646,7 +653,7 @@ define(function (require) {
               }
             }
 
-            fqHighlight = 'hl.fl=*&hl=true&hl.simple.pre=@kibana-highlighted-field@&hl.simple.post=@/kibana-highlighted-field@';
+            var fqHighlight = 'hl.fl=*&hl=true&hl.simple.pre=@kibana-highlighted-field@&hl.simple.post=@/kibana-highlighted-field@';
             q = (queryString.replace(/\b/, '')==='')?'*:*':queryString;
 
             solrReqData = 'wt=json&' + fqQueries + '&' + fqHighlight + '&' + facetQuery +
@@ -658,7 +665,7 @@ define(function (require) {
           } else if (strategy.clientMethod === 'mget') {
             // For strategy mget, we do not use search query.
             // mget will be used when saving obj in the dashboard.
-            var q = '_id:' + req._id + ' AND _type:' + req._type;            
+            q = '_id:' + req._id + ' AND _type:' + req._type;
             solrReqData = 'wt=json&q=' + q;
             solrReqUrl = configFile.solr + '/' + req._index + '/select';
           }
@@ -668,12 +675,14 @@ define(function (require) {
 
           var solrReqConfig = {
             headers: {'Content-type':'application/x-www-form-urlencoded'}
-          }
+          };
 
           return $http.post(solrReqUrl, solrReqData, solrReqConfig)
           .then(function (resp) {
             // console.log('Solr resp =', resp);
             // console.log('strategy.clientMethod =', strategy.clientMethod);
+            var clientResp;
+
             if (strategy.clientMethod === 'msearch') {
               var numFound = resp.data.response.numFound; // the total num of match
               var qtime = resp.data.responseHeader.QTime; // query response time in ms
@@ -706,22 +715,28 @@ define(function (require) {
               // Stats
               var aggregations = {};
               var statsField = resp.data.responseHeader.params['stats.field'];
+              var facetArray;
+              var facetObject;
+              var i;
 
               /**************** Buckets aggregations ****************/
               // For time-series data, compute the aggregate for facets to plot histogram
               if (aggregationType.indexOf('date_histogram') !== -1) {
-                var facetArray = resp.data.facet_counts.facet_ranges[timeField].counts;
-                var facetObject = {};
+                facetArray = resp.data.facet_counts.facet_ranges[timeField].counts;
+                facetObject = {};
 
                 if (aggregationType.indexOf('aggs') === -1) {
-                  aggregations[metricId] = { 'buckets': [] }
-                  for (var i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
+                  aggregations[metricId] = { 'buckets': [] };
+                  for (i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
                     facetObject[facetArray[i]] = facetArray[i + 1];
                   }
                   aggregations[metricId]['buckets'] = _.map(facetObject,function(item,key){
                     var epochTime;
-                    var newKey = key.replace(/(\d\d\d\d)\-(\d\d)\-(\d\d)T(\d\d)\:(\d\d)\:(\d\d)\.?\d*Z/, function (wholeMatch, m1, m2, m3, m4, m5, m6) {
-                      epochTime = (new Date(m1,parseInt(m2)-1,m3,m4,m5,m6)).getTime() - ((new Date()).getTimezoneOffset()) * 60000; //Setting the timezone offset
+                    var keyRegex = /(\d\d\d\d)\-(\d\d)\-(\d\d)T(\d\d)\:(\d\d)\:(\d\d)\.?\d*Z/;
+                    var newKey = key.replace(keyRegex, function (wholeMatch, m1, m2, m3, m4, m5, m6) {
+                      var timeVal = (new Date(m1,parseInt(m2)-1,m3,m4,m5,m6)).getTime();
+                      var timezoneOffset = (new Date()).getTimezoneOffset();
+                      epochTime = timeVal - timezoneOffset * 60000; //Setting the timezone offset
                       return m1 + '-' + m2 + '-' + m3 + 'T' + m4 + ':' + m5 + ':' + m6.split('.')[0] + ':00Z';
                     });
 
@@ -745,7 +760,7 @@ define(function (require) {
                         aggregations[metricId].buckets[i].key = new Date(bucketItem.val).getTime();
                         aggregations[metricId].buckets[i][subMetricId] = {
                           value: bucketItem[aggType] || 0
-                        }
+                        };
                         delete bucketItem.val;
                         delete bucketItem.count;
                         delete bucketItem[aggType];
@@ -757,17 +772,17 @@ define(function (require) {
 
               if (aggregationType.indexOf('terms') !== -1) {
                 if (aggregationType.indexOf('aggs') === -1) {
-                  var facetArray = resp.data.facet_counts.facet_fields[facetField];
-                  var facetObject = {};
+                  facetArray = resp.data.facet_counts.facet_fields[facetField];
+                  facetObject = {};
                   aggregations[metricId] = { 'buckets': [] };
-                  for (var i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
+                  for (i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
                     facetObject[facetArray[i]] = facetArray[i + 1];
                   }
                   aggregations[metricId]['buckets'] = _.map(facetObject, function(item, key){
                     return {
                       "doc_count": item,
                       "key": key
-                    }
+                    };
                   });
 
                 } else {
@@ -781,7 +796,7 @@ define(function (require) {
                         aggregations[metricId].buckets[i].doc_count = bucketItem.count;
                         aggregations[metricId].buckets[i][subMetricId] = {
                           value: bucketItem[aggType] || 0
-                        }
+                        };
                         delete bucketItem.val;
                         delete bucketItem.count;
                         delete bucketItem[aggType];
@@ -791,15 +806,16 @@ define(function (require) {
                 }
               }
 
+              var buckets;
               if (aggregationType.indexOf('range') !== -1) {
                 // This function is for parsing facetQuery to get the values for 'from' and 'to'.
                 // An example of facetQ => "value_d:[0 TO 1000]"
                 // The return value     => ["[0 TO 1000]", "0", "1000"]
-                function parseFacetQueries(facetQ) {
+                var parseFacetQueries = function parseFacetQueries(facetQ) {
                   return facetQ.match(/\[(\d+) TO (\d+)\]/);
-                }
+                };
 
-                var buckets = {};
+                buckets = {};
                 if (aggregationType.indexOf('aggs') === -1) {
                   buckets = _.transform(resp.data.facet_counts.facet_queries, function (result, value, key) {
                     // console.log('value, key = ', value, key);
@@ -817,13 +833,13 @@ define(function (require) {
                       from_as_string: parsedKeys[1],
                       to: Number(parsedKeys[2]),
                       to_as_string: parsedKeys[2]
-                    }
+                    };
                   });
 
                 } else {
                   buckets = _.transform(resp.data.facets, function (result, facetObj, key) {
                     // e.g. key => '0-500'
-                    if (key === 'count') return {}
+                    if (key === 'count') return {};
 
                     var parsedKeys = key.split('-');
                     result[key] = {
@@ -832,23 +848,23 @@ define(function (require) {
                       from_as_string: parsedKeys[0],
                       to: Number(parsedKeys[1]),
                       to_as_string: parsedKeys[1]
-                    }
+                    };
                     result[key][metricIdForBucket] = { value: facetObj[aggType] || 0 };
                     return result;
                   });
                 }
-                aggregations[metricId] = { buckets };
+                aggregations[metricId] = { buckets: buckets };
               }
 
               if (aggregationType.indexOf('filters') !== -1) {
-                var buckets = {};
+                buckets = {};
                 if (aggregationType.indexOf('aggs') === -1) {
                   // Parsing 'filters' will be similar to 'range' and we do not need
                   // to make pretty string value.
                   buckets = _.transform(resp.data.facet_counts.facet_queries, function (result, value, key) {
                     return result[key] = {
                       'doc_count': value
-                    }
+                    };
                   });
 
                 } else {
@@ -860,11 +876,11 @@ define(function (require) {
                     }
                   });
                 }
-                aggregations[metricId] = { buckets };
+                aggregations[metricId] = { buckets: buckets };
               }
 
               if (aggregationType.indexOf('geohash_grid') !== -1) {
-                var buckets = [];
+                buckets = [];
                 if (aggregationType.indexOf('aggs') === -1) {
                   // For Count metric
                   //   Example:
@@ -886,16 +902,16 @@ define(function (require) {
 
                       return {
                         'key': latlonGeohash.encode(lat, lon, precision)
-                      }
+                      };
                     }
                   }));
                   // Need to sum doc_count values for the same key in buckets.
                   buckets = _.map(_.countBy(buckets, 'key'), function(v,k) {
-                    return {'key': k, 'doc_count': v}
+                    return {'key': k, 'doc_count': v};
                   });
 
                 }
-                aggregations[metricId] = { buckets };
+                aggregations[metricId] = { buckets: buckets };
               }
               /*************** end of Buckets aggregations ***************/
               /************** Metrics aggregations ****************/
@@ -903,25 +919,25 @@ define(function (require) {
                 if (aggregationType.indexOf('avg') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].mean
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('sum') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].sum
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('min') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].min
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('max') !== -1) {
                   aggregations[metricId] = {
                     'value': resp.data.stats.stats_fields[statsField].max
-                  }
+                  };
                 }
 
                 if (aggregationType.indexOf('extended_stats') !== -1) {
@@ -939,7 +955,7 @@ define(function (require) {
               }
               /************** end of Metrics aggregations ****************/
               // console.log("aggregations = ", aggregations);
-              var clientResp = [
+              clientResp = [
                 {
                   "_shards": {
                     "failed": 0,
@@ -960,7 +976,7 @@ define(function (require) {
               return clientResp;
             } else if (strategy.clientMethod === 'mget') {
               // Deserialize _source field into JSON and convert clientResp into array for ES compat
-              var clientResp = resp.data.response.docs[0];
+              clientResp = resp.data.response.docs[0];
               clientResp._source = angular.fromJson(clientResp._source);
               clientResp = [clientResp];
               // console.log('mget clientResp =', clientResp);

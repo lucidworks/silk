@@ -1,3 +1,4 @@
+/* globals angular:false */
 define(function (require) {
   var _ = require('lodash');
 

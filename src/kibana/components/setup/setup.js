@@ -36,7 +36,9 @@ define(function (require) {
         .then(function (stuff) {
           defer.resolve(stuff);
         }, function (error) {
-          defer.reject('Cannot find ' + configFile.kibana_index + ' collection. Check your network connection or create the collection first.');
+          defer.reject('Cannot find '
+            + configFile.kibana_index
+            + ' collection. Check your network connection or create the collection first.');
         });
       }, function (error) {
         // Solr Schema API does not support uploading a schema.xml file to create a new collection.
@@ -49,7 +51,9 @@ define(function (require) {
         //     defer.reject();
         //   });
         // });
-        defer.reject('Cannot find ' + configFile.kibana_index + ' collection. Check your network connection or create the collection first.');
+        defer.reject('Cannot find '
+          + configFile.kibana_index
+          + ' collection. Check your network connection or create the collection first.');
       });
       return defer.promise;
     });

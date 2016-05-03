@@ -50,14 +50,14 @@ define(function (require) {
              'Content-Type': 'application/xml'
            },
            data: schemaText
-          }
+          };
           $http(req).success(function(){
             defer.resolve(true);
           }).error(function(){
             //TODO: Do something about this
           });
         });
-      }); 
+      });
 
       return defer.promise;
 

@@ -533,7 +533,7 @@ define(function (require) {
     };
 
     var loadingVis;
-    var setupVisualization = function () {
+    var setupVisualization = function () { // jshint ignore:line
       // If we're not setting anything up we need to return an empty promise
       if (!$scope.opts.timefield) return Promise.resolve();
       if (loadingVis) return loadingVis;

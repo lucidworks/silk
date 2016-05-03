@@ -127,7 +127,7 @@ define(function (require) {
           $scope.to = 'now';
         };
 
-        var getRelativeString = function () {
+        var getRelativeString = function () { // jshint ignore:line
           return 'now-' + $scope.relative.count + $scope.relative.unit + ($scope.relative.round ? '/' + $scope.relative.unit : '');
         };
 

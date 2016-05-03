@@ -212,7 +212,7 @@ define(function (require) {
 
     });
 
-    var mockIndexPattern = function (index) {
+    var mockIndexPattern = function (index) { // jshint ignore:line
       // trick the mapper into thinking this is an indexPattern
       return {
         id: index.name,

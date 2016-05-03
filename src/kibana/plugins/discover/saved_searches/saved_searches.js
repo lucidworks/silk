@@ -1,3 +1,4 @@
+/* globals angular:false */
 define(function (require) {
   var _ = require('lodash');
 
@@ -66,7 +67,7 @@ define(function (require) {
       //     })
       //   };
       // });
-      
+
       if (!searchString) {
         searchString = '';
       }

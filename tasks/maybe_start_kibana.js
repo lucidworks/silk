@@ -38,7 +38,7 @@ module.exports = function (grunt) {
         done();
       }
 
-      var done = (function (cb) {
+      var done = (function (cb) { // jshint ignore:line
         return function (res) {
           req.removeListener('error', onError);
           req.removeListener('response', onResponse);

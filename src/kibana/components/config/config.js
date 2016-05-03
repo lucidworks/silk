@@ -152,7 +152,7 @@ define(function (require) {
     /*****
      * PRIVATE API
      *****/
-    var change = function (key, val, silentAndLocal) {
+    var change = function (key, val, silentAndLocal) { // jshint ignore:line
       // if the previous updater has already fired, then start over with null
       if (updater && updater.fired) updater = null;
       // create a new updater
