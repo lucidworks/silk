@@ -715,16 +715,19 @@ define(function (require) {
               // Stats
               var aggregations = {};
               var statsField = resp.data.responseHeader.params['stats.field'];
+              var facetArray;
+              var facetObject;
+              var i;
 
               /**************** Buckets aggregations ****************/
               // For time-series data, compute the aggregate for facets to plot histogram
               if (aggregationType.indexOf('date_histogram') !== -1) {
-                var facetArray = resp.data.facet_counts.facet_ranges[timeField].counts;
-                var facetObject = {};
+                facetArray = resp.data.facet_counts.facet_ranges[timeField].counts;
+                facetObject = {};
 
                 if (aggregationType.indexOf('aggs') === -1) {
-                  aggregations[metricId] = { 'buckets': [] }
-                  for (var i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
+                  aggregations[metricId] = { 'buckets': [] };
+                  for (i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
                     facetObject[facetArray[i]] = facetArray[i + 1];
                   }
                   aggregations[metricId]['buckets'] = _.map(facetObject,function(item,key){
@@ -766,10 +769,10 @@ define(function (require) {
 
               if (aggregationType.indexOf('terms') !== -1) {
                 if (aggregationType.indexOf('aggs') === -1) {
-                  var facetArray = resp.data.facet_counts.facet_fields[facetField];
-                  var facetObject = {};
+                  facetArray = resp.data.facet_counts.facet_fields[facetField];
+                  facetObject = {};
                   aggregations[metricId] = { 'buckets': [] };
-                  for (var i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
+                  for (i = 0; i < facetArray.length; i += 2) { //Converting standard face.range response to face.date response
                     facetObject[facetArray[i]] = facetArray[i + 1];
                   }
                   aggregations[metricId]['buckets'] = _.map(facetObject, function(item, key){
