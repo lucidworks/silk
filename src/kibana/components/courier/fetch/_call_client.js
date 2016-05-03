@@ -298,13 +298,14 @@ define(function (require) {
           if (timeString === 'now') return timeString.toUpperCase();
 
           if (timeString.substr(0,3) === 'now') {
+            var unitFullString;
             if (timeString.substr(3,1) === '-' || timeString.substr(3,1) === '+') {
               // e.g. now-1d OR now-1d/d
               var timeArray = timeString.substr(4).split('/');
 
               if (timeArray.length === 1) {
                 // e.g. now-1d, now-15m
-                var unitFullString = convertUnit(timeArray[0]);
+                unitFullString = convertUnit(timeArray[0]);
                 return 'NOW' + timeString.substr(3,1) + unitFullString;
               } else {
                 // e.g. now-1d/d, now-15m/m
@@ -314,7 +315,7 @@ define(function (require) {
               }
             } else if (timeString.substr(3,1) === '/') {
               // e.g. now/d
-              var unitFullString = convertUnit(timeString.substr(4,1));
+              unitFullString = convertUnit(timeString.substr(4,1));
               return 'NOW/' + unitFullString;
             }
           }
