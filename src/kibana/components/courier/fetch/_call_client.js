@@ -806,6 +806,7 @@ define(function (require) {
                 }
               }
 
+              var buckets;
               if (aggregationType.indexOf('range') !== -1) {
                 // This function is for parsing facetQuery to get the values for 'from' and 'to'.
                 // An example of facetQ => "value_d:[0 TO 1000]"
@@ -814,7 +815,7 @@ define(function (require) {
                   return facetQ.match(/\[(\d+) TO (\d+)\]/);
                 }
 
-                var buckets = {};
+                buckets = {};
                 if (aggregationType.indexOf('aggs') === -1) {
                   buckets = _.transform(resp.data.facet_counts.facet_queries, function (result, value, key) {
                     // console.log('value, key = ', value, key);
@@ -856,7 +857,7 @@ define(function (require) {
               }
 
               if (aggregationType.indexOf('filters') !== -1) {
-                var buckets = {};
+                buckets = {};
                 if (aggregationType.indexOf('aggs') === -1) {
                   // Parsing 'filters' will be similar to 'range' and we do not need
                   // to make pretty string value.
@@ -879,7 +880,7 @@ define(function (require) {
               }
 
               if (aggregationType.indexOf('geohash_grid') !== -1) {
-                var buckets = [];
+                buckets = [];
                 if (aggregationType.indexOf('aggs') === -1) {
                   // For Count metric
                   //   Example:
