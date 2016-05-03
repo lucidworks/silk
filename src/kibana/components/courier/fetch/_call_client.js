@@ -569,9 +569,11 @@ define(function (require) {
                     } else if (bucketFacet === 'range') {
                       // for data_histogram and range buckets
                       if (aggregationType.indexOf('date_histogram') !== -1) {
+                        var from;
+                        var to;
                         try {
-                          var from = getTimeRangeObject().range[timeField].from;
-                          var to = getTimeRangeObject().range[timeField].to;
+                          from = getTimeRangeObject().range[timeField].from;
+                          to = getTimeRangeObject().range[timeField].to;
                         } catch (error) {
                           var timeField2 = _.map(getTimeRangeObject().range,function(item, key){
                             return key;
