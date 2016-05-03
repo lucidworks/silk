@@ -732,8 +732,11 @@ define(function (require) {
                   }
                   aggregations[metricId]['buckets'] = _.map(facetObject,function(item,key){
                     var epochTime;
-                    var newKey = key.replace(/(\d\d\d\d)\-(\d\d)\-(\d\d)T(\d\d)\:(\d\d)\:(\d\d)\.?\d*Z/, function (wholeMatch, m1, m2, m3, m4, m5, m6) {
-                      epochTime = (new Date(m1,parseInt(m2)-1,m3,m4,m5,m6)).getTime() - ((new Date()).getTimezoneOffset()) * 60000; //Setting the timezone offset
+                    var keyRegex = /(\d\d\d\d)\-(\d\d)\-(\d\d)T(\d\d)\:(\d\d)\:(\d\d)\.?\d*Z/;
+                    var newKey = key.replace(keyRegex, function (wholeMatch, m1, m2, m3, m4, m5, m6) {
+                      var timeVal = (new Date(m1,parseInt(m2)-1,m3,m4,m5,m6)).getTime();
+                      var timezoneOffset = (new Date()).getTimezoneOffset();
+                      epochTime = timeVal - timezoneOffset * 60000; //Setting the timezone offset
                       return m1 + '-' + m2 + '-' + m3 + 'T' + m4 + ':' + m5 + ':' + m6.split('.')[0] + ':00Z';
                     });
 

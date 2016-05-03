@@ -85,7 +85,13 @@ define(function (require) {
         //   $scope.fields = _.reduce(obj._source, createField, []);
         // })
         // .catch(notify.fatal);
-        var solrUrl = config.file.solr + '/' + config.file.kibana_index + '/select?wt=json&omitHeader=true&q=_id:' + $routeParams.id + ' AND _type:' + service.type;
+        var solrUrl = config.file.solr
+          + '/'
+          + config.file.kibana_index
+          + '/select?wt=json&omitHeader=true&q=_id:'
+          + $routeParams.id
+          + ' AND _type:'
+          + service.type;
 
         $http.get(solrUrl).then(function (resp) {
           var obj = resp.data.response.docs[0];
@@ -147,7 +153,12 @@ define(function (require) {
           // })
           // .catch(notify.fatal);
           var q = '_id:' + $routeParams.id + ' AND _type:' + service.type + ' AND _index:' + config.file.kibana_index;
-          var solrUrl = config.file.solr + '/' + config.file.kibana_index + '/update?commit=true&stream.body=<delete><query>' + q + '</query></delete>';
+          var solrUrl = config.file.solr
+            + '/'
+            + config.file.kibana_index
+            + '/update?commit=true&stream.body=<delete><query>'
+            + q
+            + '</query></delete>';
 
           $http.get(solrUrl).then(function (resp) {
             return redirectHandler('deleted');
