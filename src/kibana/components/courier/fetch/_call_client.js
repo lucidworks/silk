@@ -681,6 +681,8 @@ define(function (require) {
           .then(function (resp) {
             // console.log('Solr resp =', resp);
             // console.log('strategy.clientMethod =', strategy.clientMethod);
+            var clientResp;
+
             if (strategy.clientMethod === 'msearch') {
               var numFound = resp.data.response.numFound; // the total num of match
               var qtime = resp.data.responseHeader.QTime; // query response time in ms
@@ -946,7 +948,7 @@ define(function (require) {
               }
               /************** end of Metrics aggregations ****************/
               // console.log("aggregations = ", aggregations);
-              var clientResp = [
+              clientResp = [
                 {
                   "_shards": {
                     "failed": 0,
@@ -967,7 +969,7 @@ define(function (require) {
               return clientResp;
             } else if (strategy.clientMethod === 'mget') {
               // Deserialize _source field into JSON and convert clientResp into array for ES compat
-              var clientResp = resp.data.response.docs[0];
+              clientResp = resp.data.response.docs[0];
               clientResp._source = angular.fromJson(clientResp._source);
               clientResp = [clientResp];
               // console.log('mget clientResp =', clientResp);
