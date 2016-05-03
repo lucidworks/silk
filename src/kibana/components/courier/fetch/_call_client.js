@@ -401,7 +401,7 @@ define(function (require) {
               // console.log('fqQueries =', fqQueries);
             }
 
-            function getTimeRangeObject() {
+            var getTimeRangeObject = function getTimeRangeObject() {
               return _.filter(reqFiltered.filter.bool.must, function (item, key) { //TODO: not sure if this will work all the time
                 if (_.has(item, 'range')) {
                   return true;
