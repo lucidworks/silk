@@ -371,6 +371,7 @@ define(function (require) {
           var aggType; // Determine stats func inside aggs object.
           var locationField; // For geospatial search.
           var precision; // For geohash encode.
+          var q;
 
           //Facet check
           if (strategy.clientMethod === 'msearch') {
@@ -632,7 +633,6 @@ define(function (require) {
               fqTimefilter = '&fq=' + timeField + ':[' + from.toUpperCase() + ' TO ' + to.toUpperCase() + ']';
             }
 
-            var q;
             var queryString;
             // console.log('isMatchAll = ', isMatchAll);
             // console.log('reqQueryString = ', reqQueryString);
@@ -663,7 +663,7 @@ define(function (require) {
           } else if (strategy.clientMethod === 'mget') {
             // For strategy mget, we do not use search query.
             // mget will be used when saving obj in the dashboard.
-            var q = '_id:' + req._id + ' AND _type:' + req._type;            
+            q = '_id:' + req._id + ' AND _type:' + req._type;
             solrReqData = 'wt=json&q=' + q;
             solrReqUrl = configFile.solr + '/' + req._index + '/select';
           }
