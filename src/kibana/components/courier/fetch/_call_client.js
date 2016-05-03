@@ -653,7 +653,7 @@ define(function (require) {
               }
             }
 
-            fqHighlight = 'hl.fl=*&hl=true&hl.simple.pre=@kibana-highlighted-field@&hl.simple.post=@/kibana-highlighted-field@';
+            var fqHighlight = 'hl.fl=*&hl=true&hl.simple.pre=@kibana-highlighted-field@&hl.simple.post=@/kibana-highlighted-field@';
             q = (queryString.replace(/\b/, '')==='')?'*:*':queryString;
 
             solrReqData = 'wt=json&' + fqQueries + '&' + fqHighlight + '&' + facetQuery +
