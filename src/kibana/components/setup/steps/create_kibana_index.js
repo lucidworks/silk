@@ -57,7 +57,7 @@ define(function (require) {
             //TODO: Do something about this
           });
         });
-      }); 
+      });
 
       return defer.promise;
 

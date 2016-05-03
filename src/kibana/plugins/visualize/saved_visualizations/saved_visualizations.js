@@ -91,7 +91,7 @@ define(function (require) {
             source.id = hit._id;
             source.url = self.urlFor(hit._id);
             var typeName = source.typeName;
-            
+
             if (source.visState) {
               try { typeName = JSON.parse(source.visState).type; }
               catch (e) { /* missing typename handled below */ }

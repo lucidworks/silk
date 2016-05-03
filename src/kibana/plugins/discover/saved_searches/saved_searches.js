@@ -67,7 +67,7 @@ define(function (require) {
       //     })
       //   };
       // });
-      
+
       if (!searchString) {
         searchString = '';
       }

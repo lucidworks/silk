@@ -617,7 +617,7 @@ define(function (require) {
 
                     statsQuery += JSON.stringify(jsonFacet);
                   });
-                } 
+                }
                 /************** end of Metrics *******************/
               });
             }
