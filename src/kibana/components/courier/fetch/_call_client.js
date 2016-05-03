@@ -853,7 +853,7 @@ define(function (require) {
                     return result;
                   });
                 }
-                aggregations[metricId] = { buckets };
+                aggregations[metricId] = { buckets: buckets };
               }
 
               if (aggregationType.indexOf('filters') !== -1) {
@@ -876,7 +876,7 @@ define(function (require) {
                     }
                   });
                 }
-                aggregations[metricId] = { buckets };
+                aggregations[metricId] = { buckets: buckets };
               }
 
               if (aggregationType.indexOf('geohash_grid') !== -1) {
@@ -911,7 +911,7 @@ define(function (require) {
                   });
 
                 }
-                aggregations[metricId] = { buckets };
+                aggregations[metricId] = { buckets: buckets };
               }
               /*************** end of Buckets aggregations ***************/
               /************** Metrics aggregations ****************/
