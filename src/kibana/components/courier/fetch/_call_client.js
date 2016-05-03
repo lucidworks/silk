@@ -293,7 +293,7 @@ define(function (require) {
               default:
                 return timeunit;
             }
-          };
+          }
 
           if (timeString === 'now') return timeString.toUpperCase();
 
